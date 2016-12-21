@@ -1,7 +1,7 @@
 namespace Mood.Migrations
 {
     using System.Data.Entity.Migrations;
-    using Mood.Util;
+    using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDBContext>
     {
@@ -12,12 +12,23 @@ namespace Mood.Migrations
 
         protected override void Seed(ApplicationDBContext context)
         {
-            context.Upsert(m => m.Description, null,
-                new Models.Mood() { Id = 1, Description = "angry" },
-                new Models.Mood() { Id = 2, Description = "miffed" },
-                new Models.Mood() { Id = 3, Description = "neutral" },
-                new Models.Mood() { Id = 4, Description = "ok" },
-                new Models.Mood() { Id = 5, Description = "fantastic" });
+            context.Moods.AddOrUpdate(m => m.Description,
+                new Models.Mood() { Description = "Angry" },
+                new Models.Mood() { Description = "Miffed" },
+                new Models.Mood() { Description = "Neutral" },
+                new Models.Mood() { Description = "Ok" },
+                new Models.Mood() { Description = "Fantastic" });
+
+            // Find tevert2@gmail.com
+            var tyler = context.Users.FirstOrDefault(u => u.UserName == "tevert2@gmail.com");
+            if (tyler != null)
+            {
+                // Make a survey for Tyler
+                context.Surveys.AddOrUpdate(s => s.Description,
+                    new Models.Survey() { Description = "Default", Owner = tyler });
+            }
+
+            context.SaveChanges();
         }
     }
 }

@@ -1,11 +1,13 @@
-﻿<div class="row">
-    <div class="col-md-1">
-    </div>
-    <!-- ko foreach: app.moods -->
-    <div class="col-md-2">
-        <button data-bind="click: $data.sendMood, css: $data.img, text: $data.img"></button>
-    </div>
-    <!-- /ko -->
-    <div class="col-md-1">
-    </div>
+﻿@model IEnumerable<Mood.Models.Survey>
+@{
+    ViewBag.Title = "Home";
+}
+<div class="row">
+    <h1>Your Surveys:</h1>
+    <ul>
+        @foreach (var survey in Model)
+        {
+            <li>@Html.ActionLink(survey.Description, "View", "Survey", new { Id = survey.Id }, new { })</li>
+        }
+    </ul>
 </div>

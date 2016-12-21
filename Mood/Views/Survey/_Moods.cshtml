@@ -1,0 +1,11 @@
+﻿<div class="row">
+    <div class="col-md-1">
+    </div>
+    <!-- ko foreach: app.moods -->
+    <div class="col-md-2">
+        <button data-bind="click: $data.sendMood, css: $data.img, text: $data.img"></button>
+    </div>
+    <!-- /ko -->
+    <div class="col-md-1">
+    </div>
+</div>

@@ -8,6 +8,10 @@ namespace Mood.Migrations
     {
         public IDbSet<Models.Mood> Moods { get; set; }
 
+        public IDbSet<Survey> Surveys { get; set; }
+
+        public IDbSet<Answer> Answers { get; set; }
+
         public ApplicationDBContext() : base("DefaultConnection")
         {
         }
