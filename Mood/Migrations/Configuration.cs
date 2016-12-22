@@ -39,7 +39,8 @@ namespace Mood.Migrations
                 var message = new StringBuilder();
                 foreach (var error in e.EntityValidationErrors)
                 {
-                    message.Append($"Entity {error.Entry.Entity.ToString()}: {error.Entry.CurrentValues}\n");
+                    string properties = error.Entry.CurrentValues.PropertyNames.Select(n => n + "=" + error.Entry.CurrentValues[n]).Aggregate((p1, p2) => p1 + ", " + p2);
+                    message.Append($"Entity {error.Entry.Entity.ToString()}: {properties}\n");
 
                     foreach (var propertyError in error.ValidationErrors)
                     {
