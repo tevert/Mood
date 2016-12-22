@@ -355,6 +355,10 @@
     <Compile Include="Migrations\201612212311302_AddingAnswersAndSurveys.Designer.cs">
       <DependentUpon>201612212311302_AddingAnswersAndSurveys.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612222018011_RemovingOwnerUsernameProperty.cs" />
+    <Compile Include="Migrations\201612222018011_RemovingOwnerUsernameProperty.Designer.cs">
+      <DependentUpon>201612222018011_RemovingOwnerUsernameProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Answer.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -480,6 +484,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612212311302_AddingAnswersAndSurveys.resx">
       <DependentUpon>201612212311302_AddingAnswersAndSurveys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612222018011_RemovingOwnerUsernameProperty.resx">
+      <DependentUpon>201612222018011_RemovingOwnerUsernameProperty.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

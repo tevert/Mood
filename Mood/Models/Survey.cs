@@ -10,10 +10,7 @@ namespace Mood.Models
         public Guid Id { get; set; }
         
         [Required]
-        [ForeignKey("OwnerUserName")]
         public ApplicationUser Owner { get; set; }
-
-        public string OwnerUserName { get; set; }
 
         public string Description { get; set; }
     }
