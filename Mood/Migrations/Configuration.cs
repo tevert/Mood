@@ -27,7 +27,7 @@ namespace Mood.Migrations
             {
                 // Make a survey for Tyler
                 context.Surveys.AddOrUpdate(s => s.Description,
-                    new Models.Survey() { Description = "Default", Owner = tyler });
+                    new Models.Survey() { Description = "Default", Owner = tyler, OwnerUserName = "tevert2@gmail.com" });
             }
 
             try
