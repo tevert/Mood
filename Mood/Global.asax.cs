@@ -1,5 +1,4 @@
-﻿using Mood.Migrations;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data.Entity.Migrations;
 using System.Web;
 using System.Web.Mvc;

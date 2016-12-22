@@ -1,6 +1,7 @@
 namespace Mood.Migrations
 {
     using System.Data.Entity.Migrations;
+    using System.Data.Entity.Validation;
     using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDBContext>
@@ -28,7 +29,16 @@ namespace Mood.Migrations
                     new Models.Survey() { Description = "Default", Owner = tyler });
             }
 
-            context.SaveChanges();
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                var firstError = e.EntityValidationErrors.First().ValidationErrors.First();
+                string message = $"Property {firstError.PropertyName}: {firstError.ErrorMessage}";
+                throw new System.Exception(message);
+            }
         }
     }
 }
