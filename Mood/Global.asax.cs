@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Data.Entity.Migrations;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -15,13 +14,7 @@ namespace Mood
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            // TODO move this somewhere sensible.
-            if (bool.Parse(ConfigurationManager.AppSettings["MigrateDatabaseToLatestVersion"]))
-            {
-                var migrator = new DbMigrator(new Migrations.Configuration());
-                migrator.Update();
-            }
+            Migrations.Configuration.Initialize(ConfigurationManager.AppSettings["MigrateDatabaseToLatestVersion"]);
         }
     }
 }

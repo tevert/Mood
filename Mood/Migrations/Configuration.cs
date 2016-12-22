@@ -1,5 +1,6 @@
 namespace Mood.Migrations
 {
+    using System;
     using System.Data.Entity.Migrations;
     using System.Data.Entity.Validation;
     using System.Linq;
@@ -48,6 +49,15 @@ namespace Mood.Migrations
                     }
                 }
                 throw new System.Exception(message.ToString());
+            }
+        }
+
+        internal static void Initialize(string updateDbSetting)
+        {
+            if (bool.Parse(updateDbSetting))
+            {
+                var migrator = new DbMigrator(new Configuration());
+                migrator.Update();
             }
         }
     }
