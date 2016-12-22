@@ -31,7 +31,7 @@ namespace Mood.Migrations
 
             try
             {
-                context.SaveChanges();
+                // context.SaveChanges();
             }
             catch (DbEntityValidationException e)
             {
