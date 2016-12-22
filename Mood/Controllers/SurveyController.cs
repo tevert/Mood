@@ -1,7 +1,9 @@
 ﻿using Mood.Migrations;
+using Mood.Models;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -16,6 +18,7 @@ namespace Mood.Controllers
             this.db = db;
         }
 
+        [HttpGet]
         public async Task<ActionResult> View(Guid id)
         {
             var survey = await db.Surveys.Where(s => s.Id == id).FirstOrDefaultAsync();
@@ -32,6 +35,30 @@ namespace Mood.Controllers
         public ActionResult Create()
         {
             return View();
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Answer(Guid id, int moodId)
+        {
+            // First dig up our survey
+            var survey = await db.Surveys.FirstOrDefaultAsync(s => s.Id == id);
+            if (survey == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Next check the mood
+            var mood = await db.Moods.FirstOrDefaultAsync(m => m.Id == moodId);
+            if (mood == null)
+            {
+                return HttpNotFound();
+            }
+
+            // OK, log the hit
+            db.Answers.Add(new Answer() { Mood = mood, Survey = survey, Time = DateTime.Now });
+            await db.SaveChangesAsync();
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
     }
 }
