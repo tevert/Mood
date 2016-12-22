@@ -20,7 +20,7 @@ namespace Mood
             // TODO move this somewhere sensible.
             if (bool.Parse(ConfigurationManager.AppSettings["MigrateDatabaseToLatestVersion"]))
             {
-                var migrator = new DbMigrator(new DbMigrationsConfiguration<ApplicationDBContext>());
+                var migrator = new DbMigrator(new Mood.Migrations.Configuration());
                 migrator.Update();
             }
         }
