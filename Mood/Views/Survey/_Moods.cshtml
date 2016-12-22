@@ -1,15 +1,11 @@
 ﻿@model IEnumerable<Mood.Models.Mood>
 
 <div class="row">
-    <div class="col-md-1">
-    </div>
     <!-- ko foreach: app.moods -->
-    <div class="col-md-2">
+    <div class="smiley-containers">
         <a data-bind="click: $data.sendMood"><img class="smiley" data-bind="attr:{src: $data.img}, css: $data.flash" /></a>
     </div>
     <!-- /ko -->
-    <div class="col-md-1">
-    </div>
 </div>
 
 <script>
