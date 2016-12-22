@@ -3,6 +3,7 @@ namespace Mood.Migrations
     using System.Data.Entity.Migrations;
     using System.Data.Entity.Validation;
     using System.Linq;
+    using System.Text;
 
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDBContext>
     {
@@ -31,13 +32,19 @@ namespace Mood.Migrations
 
             try
             {
-                // context.SaveChanges();
+                context.SaveChanges();
             }
             catch (DbEntityValidationException e)
             {
-                var firstError = e.EntityValidationErrors.First().ValidationErrors.First();
-                string message = $"Property {firstError.PropertyName}: {firstError.ErrorMessage}";
-                throw new System.Exception(message);
+                var message = new StringBuilder();
+                foreach (var error in e.EntityValidationErrors)
+                {
+                    foreach (var propertyError in error.ValidationErrors)
+                    {
+                        message.Append($"Property {propertyError.PropertyName}: {propertyError.ErrorMessage}\n");
+                    }
+                }
+                throw new System.Exception(message.ToString());
             }
         }
     }
