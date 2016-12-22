@@ -1,11 +1,11 @@
-﻿@model Mood.Models.Survey
+﻿@model Mood.ViewModels.SurveyViewModel
 @{
-    ViewBag.Title = Model.Description;
+    ViewBag.Title = Model.Survey.Description;
     Layout = "~/Views/Shared/_LayoutMinimal.cshtml";
 }
 
 @section SPAViews {
-    @Html.Partial("_Moods")
+    @Html.Partial("_Moods", Model.Moods)
 }
 @section Scripts{
     @Scripts.Render("~/bundles/knockout")

@@ -1,4 +1,6 @@
-﻿<div class="row">
+﻿@model IEnumerable<Mood.Models.Mood>
+
+<div class="row">
     <div class="col-md-1">
     </div>
     <!-- ko foreach: app.moods -->
@@ -9,3 +11,7 @@
     <div class="col-md-1">
     </div>
 </div>
+
+<script>
+    window.moods = @Html.Raw(Json.Encode(Model))
+</script>

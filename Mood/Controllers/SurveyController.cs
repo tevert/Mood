@@ -1,5 +1,6 @@
 ﻿using Mood.Migrations;
 using Mood.Models;
+using Mood.ViewModels;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -27,7 +28,9 @@ namespace Mood.Controllers
                 return HttpNotFound();
             }
 
-            return View(survey);
+            var moods = await db.Moods.ToListAsync();
+
+            return View(new SurveyViewModel() { Survey = survey, Moods = moods });
         }
 
         [Authorize]
