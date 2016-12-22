@@ -37,6 +37,11 @@ a:hover { /* Our no-url images should still have a clickable mouseover */
     cursor:pointer;
 }
 
+.smiley {
+    max-height: 100%;
+    max-width: 100%;
+}
+
 @media only screen and (max-width: 767px) {
     .nofloat {
         float: none;
