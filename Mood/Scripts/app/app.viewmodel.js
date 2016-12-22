@@ -2,7 +2,6 @@
     // Private state
     var self = this;
     
-    // TODO retrieve moods via web API
     self.moods = [new MoodViewModel(1, window.location.origin + '/Content/Images/Angry.png'),
         new MoodViewModel(2, window.location.origin + '/Content/Images/Miffed.png'),
         new MoodViewModel(3, window.location.origin + '/Content/Images/Neutral.png'),

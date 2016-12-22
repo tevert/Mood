@@ -40,6 +40,13 @@ a:hover { /* Our no-url images should still have a clickable mouseover */
 .smiley {
     max-height: 100%;
     max-width: 100%;
+    border-radius: 100px;
+    transition: background 0.5s ease-in;
+}
+
+.flash-green {
+    transition: none;
+    background: #668855;
 }
 
 @media only screen and (max-width: 767px) {
