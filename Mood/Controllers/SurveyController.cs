@@ -1,5 +1,6 @@
 ﻿using Mood.Migrations;
 using Mood.Models;
+using Mood.Services;
 using Mood.ViewModels;
 using System;
 using System.Data.Entity;
@@ -13,10 +14,23 @@ namespace Mood.Controllers
     public class SurveyController : Controller
     {
         private IApplicationDBContext db;
+        private IDateTimeService time;
 
-        public SurveyController(IApplicationDBContext db)
+        public SurveyController(IApplicationDBContext db, IDateTimeService time)
         {
+            if (db == null)
+            {
+                throw new ArgumentNullException(nameof(db));
+            }
+
             this.db = db;
+
+            if (time == null)
+            {
+                throw new ArgumentNullException(nameof(time));
+            }
+
+            this.time = time;
         }
 
         [HttpGet]
@@ -58,7 +72,7 @@ namespace Mood.Controllers
             }
 
             // OK, log the hit
-            db.Answers.Add(new Answer() { Mood = mood, Survey = survey, Time = DateTime.Now });
+            db.Answers.Add(new Answer() { Mood = mood, Survey = survey, Time = time.Now() });
             await db.SaveChangesAsync();
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);

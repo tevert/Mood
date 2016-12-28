@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+<div class="row">
+    <h1>Welcome!</h1>
+    <p>If you were given a link to a mood board, please make sure to copy-paste the <i>entire</i> url.</p>
+    <p>If you want to create a new moodboard, please sign in first: @Html.ActionLink("Log in with Google", "ExternalLogin", "Account", new { ReturnUrl = Request.Url.PathAndQuery }, new { })
+ </p>
+</div>

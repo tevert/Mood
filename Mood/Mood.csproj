@@ -369,6 +369,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
+    <Compile Include="Services\DateTimeService.cs" />
+    <Compile Include="Services\IDateTimeService.cs" />
+    <Compile Include="Services\ISecurity.cs" />
+    <Compile Include="Services\Security.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Util\Extensions.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
@@ -452,6 +456,8 @@
     <Content Include="Views\Survey\View.cshtml" />
     <Content Include="Views\Survey\_Moods.cshtml" />
     <Content Include="Views\Shared\_LayoutMinimal.cshtml" />
+    <Content Include="Views\Home\IndexNotAuthenticated.cshtml" />
+    <Content Include="Views\Home\_HomeNotAuthenticated.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -5,26 +5,41 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using Mood.Models;
 using System.Collections.Generic;
+using System;
+using Mood.Services;
 
 namespace Mood.Controllers
 {
     public class HomeController : Controller
     {
         public IApplicationDBContext db;
+        private ISecurity security;
 
-        public HomeController(IApplicationDBContext db)
+        public HomeController(IApplicationDBContext db, ISecurity security)
         {
+            if (db == null)
+            {
+                throw new ArgumentNullException(nameof(db));
+            }
+
             this.db = db;
+
+            if (security == null)
+            {
+                throw new ArgumentNullException(nameof(security));
+            }
+
+            this.security = security;
         }
 
         public async Task<ActionResult> Index()
         {
-            var surveys = new List<Survey>();
-            if (User != null)
+            if (!security.IsAuthenticated)
             {
-                surveys = await db.Surveys.Where(s => s.Owner.UserName == User.Identity.Name).ToListAsync();
+                return View("IndexNotAuthenticated");
             }
-
+            
+            var surveys = await db.Surveys.Where(s => s.Owner.UserName == security.UserName).ToListAsync();
             return View(surveys);
         }
     }
