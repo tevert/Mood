@@ -38,8 +38,9 @@ a:hover { /* Our no-url images should still have a clickable mouseover */
 }
 
 .smiley-containers {
-    width: 20%; /* Assumes we have 5 moods */
+    width: 14%; /* Assumes we have 5 moods */
     float: left;
+    margin-right: 6%;
 }
 
 .smiley {
@@ -47,11 +48,17 @@ a:hover { /* Our no-url images should still have a clickable mouseover */
     max-width: 100%;
     border-radius: 100px;
     transition: background 0.5s ease-in;
+    transition: opacity 0.5s ease-in;
 }
 
 .flash-green {
     transition: none;
     background: #668855;
+}
+
+.flash-fade {
+    transition: none;
+    opacity: .2;
 }
 
 @media only screen and (max-width: 767px) {

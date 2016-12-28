@@ -3,9 +3,10 @@
 
     self.value = value;
     self.img = img;
+    self.siblings = [];
     self.flash = ko.observable("");
 
-    self.sendMood = function () {
+    self.sendMood = function (parentVM) {
         if (self.flash()) {
             return;
         }
@@ -17,8 +18,11 @@
             data: JSON.stringify({ moodId: self.value }),
             success: function (data) {
                 self.flash("flash-green");
+                parentVM.moods
+                    .filter(function (mood) { return mood.value != self.value; })
+                    .forEach(function (sibling) { sibling.flash("flash-fade"); });
                 setTimeout(function () {
-                    self.flash("");
+                    parentVM.moods.forEach(function (mood) { mood.flash(""); });
                 }, 2000);
             }
         });
