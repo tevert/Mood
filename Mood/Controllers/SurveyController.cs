@@ -68,6 +68,26 @@ namespace Mood.Controllers
             return RedirectToAction("View", new { id = survey.Id });
         }
 
+        [Authorize]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var survey = await db.Surveys.FirstOrDefaultAsync(s => s.Id == id);
+            if (survey == null)
+            {
+                return HttpNotFound();
+            }
+
+            var answers = await db.Answers.Where(a => a.SurveyId == survey.Id).ToListAsync();
+            foreach (var answer in answers)
+            {
+                db.Answers.Remove(answer);
+            }
+            db.Surveys.Remove(survey);
+            await db.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpPut]
         public async Task<ActionResult> Answer(Guid id, int moodId)
         {

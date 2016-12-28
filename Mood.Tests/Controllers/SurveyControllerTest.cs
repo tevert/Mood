@@ -217,5 +217,54 @@ namespace Mood.Tests.Controllers
         }
 
         #endregion
+
+        #region Delete
+
+        [TestMethod]
+        public void Delete_IdNotFound_Returns404()
+        {
+            var id = Guid.NewGuid();
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            var surveyDataMock = new Mock<DbSet<Survey>>().SetupData(new[] { new Survey() { Id = Guid.NewGuid() } });
+            dbMock.Setup(db => db.Surveys).Returns(surveyDataMock.Object);
+
+            var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), Mock.Of<ISecurity>());
+
+            var result = subject.Delete(id).Result;
+
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+        }
+
+        [TestMethod]
+        public void Delete_IdOK_DeletesAnswersAndDeletesSurveyAndRedirectsToHome()
+        {
+            var id = Guid.NewGuid();
+            var survey = new Survey() { Id = id };
+            var moods = new[] { new Models.Mood() { Id = 1 }, new Models.Mood() { Id = 2 } };
+            var answer1 = new Answer() { MoodId = 1, SurveyId = id };
+            var answer2 = new Answer() { MoodId = 2, SurveyId = id };
+            var answers = new List<Answer>() { answer1, answer2  };
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            var surveyDataMock = new Mock<DbSet<Survey>>().SetupData(new List<Survey> { survey });
+            var moodDataMock = new Mock<DbSet<Models.Mood>>().SetupData(moods);
+            var answerDataMock = new Mock<DbSet<Answer>>().SetupData(answers);
+            dbMock.Setup(db => db.Surveys).Returns(surveyDataMock.Object);
+            dbMock.Setup(db => db.Moods).Returns(moodDataMock.Object);
+            dbMock.Setup(db => db.Answers).Returns(answerDataMock.Object);
+
+            var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), Mock.Of<ISecurity>());
+
+            var result = subject.Delete(id).Result;
+
+            Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
+            surveyDataMock.Verify(d => d.Remove(survey));
+            answerDataMock.Verify(d => d.Remove(answer1));
+            answerDataMock.Verify(d => d.Remove(answer2));
+            dbMock.Verify(d => d.SaveChangesAsync());
+        }
+
+        #endregion
     }
 }
