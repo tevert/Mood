@@ -22,15 +22,6 @@ namespace Mood.Migrations
                 new Models.Mood() { Description = "Ok" },
                 new Models.Mood() { Description = "Fantastic" });
 
-            // Find tevert2@gmail.com
-            var tyler = context.Users.FirstOrDefault(u => u.UserName == "tevert2@gmail.com");
-            if (tyler != null)
-            {
-                // Make a survey for Tyler
-                context.Surveys.AddOrUpdate(s => s.Description,
-                    new Models.Survey() { Description = "Default", Owner = tyler });
-            }
-
             try
             {
                 context.SaveChanges();

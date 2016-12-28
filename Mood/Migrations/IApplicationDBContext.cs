@@ -9,7 +9,7 @@ namespace Mood.Migrations
         IDbSet<Models.Mood> Moods { get; set; }
         IDbSet<Survey> Surveys { get; set; }
         IDbSet<Answer> Answers { get; set; }
-
+        IDbSet<ApplicationUser> Users { get; set; }
         Task<int> SaveChangesAsync();
     }
 }

@@ -15,8 +15,9 @@ namespace Mood.Controllers
     {
         private IApplicationDBContext db;
         private IDateTimeService time;
+        private ISecurity security;
 
-        public SurveyController(IApplicationDBContext db, IDateTimeService time)
+        public SurveyController(IApplicationDBContext db, IDateTimeService time, ISecurity security)
         {
             if (db == null)
             {
@@ -31,6 +32,12 @@ namespace Mood.Controllers
             }
 
             this.time = time;
+
+            if (security == null)
+            {
+                throw new ArgumentNullException(nameof(security));
+            }
+            this.security = security;
         }
 
         [HttpGet]
@@ -48,10 +55,18 @@ namespace Mood.Controllers
         }
 
         [Authorize]
-        [HttpPost]
-        public ActionResult Create()
+        [HttpGet]
+        public async Task<ActionResult> Create()
         {
-            return View();
+            var description = "Default";
+            var user = await db.Users.Where(u => u.UserName == security.UserName).FirstAsync();
+            var guid = Guid.NewGuid();
+            var survey = new Survey() { Description = description, Owner = user, Id = guid };
+
+            db.Surveys.Add(survey);
+            await db.SaveChangesAsync();
+
+            return RedirectToAction("View", new { id = survey.Id });
         }
 
         [HttpPut]
