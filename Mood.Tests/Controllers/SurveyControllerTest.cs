@@ -193,6 +193,29 @@ namespace Mood.Tests.Controllers
             dbMock.Verify(db => db.SaveChangesAsync());
         }
 
+        [TestMethod]
+        public void Create_RequestIncludesDescription_ReturnsRedirectToNewSurvey()
+        {
+            var timeMock = new Mock<IDateTimeService>();
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            var surveyDataMock = new Mock<DbSet<Survey>>().SetupData();
+            var userDataMock = new Mock<DbSet<ApplicationUser>>().SetupData(new[] { new ApplicationUser() { UserName = "tyler" } });
+            dbMock.SetupGet(db => db.Surveys).Returns(surveyDataMock.Object);
+            dbMock.SetupGet(db => db.Users).Returns(userDataMock.Object);
+
+            var securityMock = new Mock<ISecurity>();
+            securityMock.SetupGet(s => s.UserName).Returns("tyler");
+
+            var subject = new SurveyController(dbMock.Object, timeMock.Object, securityMock.Object);
+
+            var result = subject.Create("Question?").Result;
+
+            Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
+            surveyDataMock.Verify(d => d.Add(It.Is<Survey>(s => s.Owner.UserName == "tyler" && s.Description == "Question?")));
+            dbMock.Verify(db => db.SaveChangesAsync());
+        }
+
         #endregion
     }
 }

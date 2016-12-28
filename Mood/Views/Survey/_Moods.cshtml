@@ -1,6 +1,7 @@
-﻿@model IEnumerable<Mood.Models.Mood>
+﻿@model Mood.ViewModels.SurveyViewModel
 
 <div class="row">
+    <h1>@Model.Survey.Description</h1>
     <!-- ko foreach: app.moods -->
     <div class="smiley-containers">
         <a data-bind="click: function() { $data.sendMood($parent) }"><img class="smiley" data-bind="attr:{src: $data.img}, css: $data.flash" /></a>
@@ -9,5 +10,5 @@
 </div>
 
 <script>
-    window.moods = @Html.Raw(Json.Encode(Model))
+    window.moods = @Html.Raw(Json.Encode(Model.Moods))
 </script>

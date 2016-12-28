@@ -9,6 +9,10 @@
         {
             <li>@Html.ActionLink(survey.Description, "View", "Survey", new { Id = survey.Id }, new { })</li>
         }
-        <li>@Html.ActionLink("Create new...", "Create", "Survey")</li>
+        <li>@using (Html.BeginForm("Create", "Survey"))
+        {
+            <input type="submit" value="Create New: " class="btn btn-default" />
+            @Html.TextBox("description", "How is your workday going?", new { size = "50" })
+        }</li>
     </ul>
 </div>

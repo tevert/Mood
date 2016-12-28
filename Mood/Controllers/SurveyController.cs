@@ -55,10 +55,9 @@ namespace Mood.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        public async Task<ActionResult> Create()
+        [HttpPost]
+        public async Task<ActionResult> Create(string description = "Default")
         {
-            var description = "Default";
             var user = await db.Users.Where(u => u.UserName == security.UserName).FirstAsync();
             var guid = Guid.NewGuid();
             var survey = new Survey() { Description = description, Owner = user, Id = guid };
