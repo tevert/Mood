@@ -24,7 +24,17 @@
                 setTimeout(function () {
                     parentVM.moods.forEach(function (mood) { mood.flash(""); });
                 }, 2000);
+
+                // Check every 10 seconds; if the details are empty, the person is gone and we can clean up
                 parentVM.lastAnswer(answer);
+                function check() {
+                    if (!parentVM.details()) {
+                        parentVM.lastAnswer(null);
+                    } else {
+                        setTimeout(check, 10000);
+                    }
+                }
+                setTimeout(check, 10000);
             }
         });
     };
