@@ -3,10 +3,22 @@
 <div class="row">
     <h1>@Model.Survey.Description</h1>
     <!-- ko foreach: app.moods -->
-    <div class="smiley-containers">
+    <div data-bind="css: { first: $index() == 0, 'smiley-containers': true }">
         <a data-bind="click: function() { $data.sendMood($parent) }"><img class="smiley" data-bind="attr:{src: $data.img}, css: $data.flash" /></a>
     </div>
     <!-- /ko -->
+</div>
+<div class="row">
+    <h2>Want to say more?</h2>
+    <div class="col-md-12">
+        <textarea id="details" name="details" data-bind="value: details, valueUpdate: 'afterkeydown'" rows="3" class="textarea-with-button"></textarea>
+        <button type="button" class="btn btn-default embedded-button" aria-label="Left Align" data-bind="visible: details, click: submitDetails">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        </button>
+    </div>
+    <div class="col-md-3" data-bind="visible: showInstructions">
+        <p class="label label-warning">Tap a face, then submit your message</p>
+    </div>
 </div>
 
 <script>

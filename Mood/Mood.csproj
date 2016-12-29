@@ -334,6 +334,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AnswerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SurveyController.cs" />
     <Compile Include="Global.asax.cs">
@@ -358,6 +359,10 @@
     <Compile Include="Migrations\201612222018011_RemovingOwnerUsernameProperty.cs" />
     <Compile Include="Migrations\201612222018011_RemovingOwnerUsernameProperty.Designer.cs">
       <DependentUpon>201612222018011_RemovingOwnerUsernameProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612291537304_AddingTextFieldToAnswers.cs" />
+    <Compile Include="Migrations\201612291537304_AddingTextFieldToAnswers.Designer.cs">
+      <DependentUpon>201612291537304_AddingTextFieldToAnswers.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Answer.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -461,6 +466,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Answer\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -492,6 +498,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612222018011_RemovingOwnerUsernameProperty.resx">
       <DependentUpon>201612222018011_RemovingOwnerUsernameProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612291537304_AddingTextFieldToAnswers.resx">
+      <DependentUpon>201612291537304_AddingTextFieldToAnswers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

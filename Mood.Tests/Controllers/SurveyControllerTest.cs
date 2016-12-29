@@ -136,7 +136,7 @@ namespace Mood.Tests.Controllers
         }
 
         [TestMethod]
-        public void Answer_IdsOK_CreatesAnswerAndReturnsOK()
+        public void Answer_IdsOK_CreatesAnswerAndReturnsModel()
         {
             var id = Guid.NewGuid();
             var moodId = 10;
@@ -159,8 +159,12 @@ namespace Mood.Tests.Controllers
 
             var result = subject.Answer(id, moodId).Result;
 
-            Assert.IsInstanceOfType(result, typeof(HttpStatusCodeResult));
-            Assert.AreEqual(200, (result as HttpStatusCodeResult).StatusCode);
+            Assert.IsInstanceOfType(result, typeof(JsonResult));
+            Assert.IsInstanceOfType((result as JsonResult).Data, typeof(Answer));
+            var answer = (result as JsonResult).Data as Answer;
+            Assert.AreSame(survey, answer.Survey);
+            Assert.AreSame(moods[0], answer.Mood);
+            Assert.AreEqual(time, answer.Time);
 
             answersDataMock.Verify(d => d.Add(It.Is<Answer>(a => a.Mood == moods[0] && a.Survey == survey && a.Time == time)));
             dbMock.Verify(db => db.SaveChangesAsync());

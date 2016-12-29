@@ -16,13 +16,6 @@
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
-}
-
 /* Set padding to display errors that occur during databinding */
 .padding-error {
     padding-top: 20px;
@@ -40,7 +33,11 @@ a:hover { /* Our no-url images should still have a clickable mouseover */
 .smiley-containers {
     width: 14%; /* Assumes we have 5 moods */
     float: left;
-    margin-right: 6%;
+    margin-left: 7.5%; /* with four gaps in between */
+}
+
+.smiley-containers.first {
+    margin-left: 0;
 }
 
 .smiley {
@@ -65,8 +62,19 @@ a:hover { /* Our no-url images should still have a clickable mouseover */
     padding: 15px;
 }
 
+.textarea-with-button {
+    position: relative;
+    width: 89%;
+    resize: none;
+}
+
+.embedded-button {
+    height: 65px;
+    width: 10%
+}
+
 @media only screen and (max-width: 767px) {
-    .nofloat {
+    .nofloat; {
         float: none;
         padding: 10px 15px;
     }

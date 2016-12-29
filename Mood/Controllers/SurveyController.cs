@@ -5,7 +5,6 @@ using Mood.ViewModels;
 using System;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -106,10 +105,11 @@ namespace Mood.Controllers
             }
 
             // OK, log the hit
-            db.Answers.Add(new Answer() { Mood = mood, Survey = survey, Time = time.Now() });
+            var answer = new Answer() { Mood = mood, Survey = survey, Time = time.Now() };
+            db.Answers.Add(answer);
             await db.SaveChangesAsync();
 
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+            return Json(answer);
         }
     }
 }

@@ -18,5 +18,7 @@ namespace Mood.Models
         public Mood Mood { get; set; }
 
         public int? MoodId { get; set; }
+
+        public string Details { get; set; }
     }
 }

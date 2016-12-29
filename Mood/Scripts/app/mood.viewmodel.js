@@ -15,8 +15,8 @@
             method: 'put',
             url: window.location.origin + "/Survey/Answer/" + window.location.href.split('/').pop(),
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify({ moodId: self.value }),
-            success: function (data) {
+            data: JSON.stringify({ moodId: self.value, details: parentVM.details() }),
+            success: function (answer) {
                 self.flash("flash-green");
                 parentVM.moods
                     .filter(function (mood) { return mood.value != self.value; })
@@ -24,6 +24,7 @@
                 setTimeout(function () {
                     parentVM.moods.forEach(function (mood) { mood.flash(""); });
                 }, 2000);
+                parentVM.lastAnswer(answer);
             }
         });
     };

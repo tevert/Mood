@@ -116,6 +116,7 @@
   <ItemGroup>
     <Compile Include="Controllers\SurveyControllerTest.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
+    <Compile Include="Controllers\AnswerControllerTest.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
