@@ -1,0 +1,13 @@
+﻿{
+    "short_name": "Mood",
+    "name": "Mood - a simple moodboard",
+    "icons": [
+        {
+            "src": "/Content/Images/Fantastic.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ],
+    "display": "standalone",
+    "orientation": "landscape"
+}
