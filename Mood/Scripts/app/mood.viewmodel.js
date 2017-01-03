@@ -6,10 +6,13 @@
     self.siblings = [];
     self.flash = ko.observable("");
 
+    self.pendingRequest = ko.observable(false);
+
     self.sendMood = function (parentVM) {
         if (self.flash()) {
             return;
         }
+        self.pendingRequest(true);
 
         $.ajax({
             method: 'put',
@@ -35,6 +38,9 @@
                     }
                 }
                 setTimeout(check, 10000);
+            },
+            complete: function () {
+                self.pendingRequest(false);
             }
         });
     };
