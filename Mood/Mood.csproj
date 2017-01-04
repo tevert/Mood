@@ -398,7 +398,6 @@
     <Content Include="Content\Images\Miffed.png" />
     <Content Include="Content\Images\Angry.png" />
     <Content Include="Content\Site.css" />
-    <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\app\mood.viewmodel.js" />
