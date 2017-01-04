@@ -62,17 +62,6 @@ a:hover { /* Our no-url images should still have a clickable mouseover */
     padding: 15px;
 }
 
-.textarea-with-button {
-    position: relative;
-    width: 89%;
-    resize: none;
-}
-
-.embedded-button {
-    height: 65px;
-    width: 10%
-}
-
 .navbar-brand img {
     max-height: 100%;
     height: 100%;
