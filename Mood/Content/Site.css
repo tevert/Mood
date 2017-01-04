@@ -73,6 +73,13 @@ a:hover { /* Our no-url images should still have a clickable mouseover */
     width: 10%
 }
 
+.navbar-brand img {
+    max-height: 100%;
+    height: 100%;
+    -o-object-fit: contain;
+    object-fit: contain;
+}
+
 @media only screen and (max-width: 767px) {
     .nofloat {
         float: none;
