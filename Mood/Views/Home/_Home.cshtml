@@ -8,13 +8,14 @@
         @foreach (var survey in Model)
         {
             <li>
-                <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#confimDelete@(survey.Id)">x</button>
+                <button type="button" class="btn btn-default glyphicon glyphicon-trash" data-toggle="modal" data-target="#confimDelete@(survey.Id)"></button>
+                <a class="btn btn-default glyphicon glyphicon-scale" href="@Url.Action("Results", "Survey", new { Id = survey.Id })"></a>
                 @Html.ActionLink(survey.Description, "View", "Survey", new { Id = survey.Id }, new { })
             </li>
         }
         <li>@using (Html.BeginForm("Create", "Survey"))
         {
-            <input type="submit" value="Create New: " class="btn btn-default btn-xs" />
+            <input type="submit" value="Create New: " class="btn btn-default" />
             @Html.TextBox("description", "How is your workday going?", new { size = "50" })
         }</li>
     </ul>

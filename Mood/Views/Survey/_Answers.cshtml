@@ -1,0 +1,42 @@
+﻿@model Mood.ViewModels.ResultsViewModel
+
+<div class="row">
+    <h1>@Model.Survey.Description</h1>
+    <button class="btn btn-default" onclick="doCopy()">Copy Results to Clipboard</button>
+</div>
+
+<div class="row">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Mood</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Mood.Models.Answer answer in Model.Answers)
+            {
+                <tr class="mood@(answer.MoodId)">
+                    <td>@(answer.Time.Value.ToString("f"))</td>
+                    <td>@(answer.Mood.Description)</td>
+                    <td>@(answer.Details)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function doCopy() {
+        @{ 
+            var dataString = "";
+            foreach(var answer in Model.Answers)
+            {
+                dataString += $"{answer.Time.Value.ToString("f")}\t{answer.Mood.Description}\t{answer.Details}\n";
+            }
+        }
+        var dataString = "@dataString";
+        copyToClipboard(dataString);
+    }
+</script>

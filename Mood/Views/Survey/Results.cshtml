@@ -1,0 +1,13 @@
+﻿@model Mood.ViewModels.ResultsViewModel
+@{
+    ViewBag.Title = Model.Survey.Description;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section SPAViews {
+    @Html.Partial("_Answers", Model)
+}
+@section Scripts{
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/app")
+}

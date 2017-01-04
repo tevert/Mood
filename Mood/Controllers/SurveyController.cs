@@ -5,6 +5,7 @@ using Mood.ViewModels;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -68,12 +69,38 @@ namespace Mood.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> Delete(Guid id)
+        [HttpGet]
+        public async Task<ActionResult> Results(Guid id)
         {
-            var survey = await db.Surveys.FirstOrDefaultAsync(s => s.Id == id);
+            var survey = await db.Surveys.Include(s => s.Owner).FirstOrDefaultAsync(s => s.Id == id);
             if (survey == null)
             {
                 return HttpNotFound();
+            }
+
+            if (survey.Owner.UserName != security.UserName)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+
+
+            var answers = await db.Answers.Include(a => a.Mood).Where(a => a.SurveyId == survey.Id).ToListAsync();
+
+            return View(new ResultsViewModel() { Survey = survey, Answers = answers });
+        }
+
+        [Authorize]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var survey = await db.Surveys.Include(s => s.Owner).FirstOrDefaultAsync(s => s.Id == id);
+            if (survey == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (survey.Owner.UserName != security.UserName)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
 
             var answers = await db.Answers.Where(a => a.SurveyId == survey.Id).ToListAsync();
@@ -81,6 +108,7 @@ namespace Mood.Controllers
             {
                 db.Answers.Remove(answer);
             }
+            
             db.Surveys.Remove(survey);
             await db.SaveChangesAsync();
 

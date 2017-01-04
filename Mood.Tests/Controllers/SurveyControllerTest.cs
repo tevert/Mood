@@ -241,10 +241,31 @@ namespace Mood.Tests.Controllers
         }
 
         [TestMethod]
+        public void Delete_WrongUser_Returns403()
+        {
+            var id = Guid.NewGuid();
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            var surveyDataMock = new Mock<DbSet<Survey>>().SetupData(new List<Survey> { new Survey() { Id = id, Owner = new ApplicationUser() { UserName = "Tyler" } } });
+            dbMock.SetupGet(db => db.Surveys).Returns(surveyDataMock.Object);
+            dbMock.SetupGet(db => db.Answers).Returns(new Mock<DbSet<Answer>>().SetupData().Object);
+
+            var securityMock = new Mock<ISecurity>();
+            securityMock.SetupGet(s => s.UserName).Returns("Peter");
+
+            var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), securityMock.Object);
+
+            var result = subject.Delete(id).Result;
+
+            Assert.IsInstanceOfType(result, typeof(HttpStatusCodeResult));
+            Assert.AreEqual(403, (result as HttpStatusCodeResult).StatusCode);
+        }
+
+        [TestMethod]
         public void Delete_IdOK_DeletesAnswersAndDeletesSurveyAndRedirectsToHome()
         {
             var id = Guid.NewGuid();
-            var survey = new Survey() { Id = id };
+            var survey = new Survey() { Id = id, Owner = new ApplicationUser() { UserName = "Tyler" } };
             var moods = new[] { new Models.Mood() { Id = 1 }, new Models.Mood() { Id = 2 } };
             var answer1 = new Answer() { MoodId = 1, SurveyId = id };
             var answer2 = new Answer() { MoodId = 2, SurveyId = id };
@@ -258,7 +279,10 @@ namespace Mood.Tests.Controllers
             dbMock.Setup(db => db.Moods).Returns(moodDataMock.Object);
             dbMock.Setup(db => db.Answers).Returns(answerDataMock.Object);
 
-            var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), Mock.Of<ISecurity>());
+            var securityMock = new Mock<ISecurity>();
+            securityMock.SetupGet(s => s.UserName).Returns("Tyler");
+
+            var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), securityMock.Object);
 
             var result = subject.Delete(id).Result;
 
@@ -267,6 +291,81 @@ namespace Mood.Tests.Controllers
             answerDataMock.Verify(d => d.Remove(answer1));
             answerDataMock.Verify(d => d.Remove(answer2));
             dbMock.Verify(d => d.SaveChangesAsync());
+        }
+
+        #endregion
+
+        #region Results
+
+        [TestMethod]
+        public void Results_IdNotFound_Returns404()
+        {
+            var id = Guid.NewGuid();
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            var surveyDataMock = new Mock<DbSet<Survey>>().SetupData(new[] { new Survey() { Id = Guid.NewGuid() } });
+            dbMock.Setup(db => db.Surveys).Returns(surveyDataMock.Object);
+
+            var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), Mock.Of<ISecurity>());
+
+            var result = subject.Results(id).Result;
+
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+        }
+
+        [TestMethod]
+        public void Results_WrongUser_Returns403()
+        {
+            var id = Guid.NewGuid();
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            var surveyDataMock = new Mock<DbSet<Survey>>().SetupData(new List<Survey> { new Survey() { Id = id, Owner = new ApplicationUser() { UserName = "Tyler" } } });
+            dbMock.SetupGet(db => db.Surveys).Returns(surveyDataMock.Object);
+            dbMock.SetupGet(db => db.Answers).Returns(new Mock<DbSet<Answer>>().SetupData().Object);
+
+            var securityMock = new Mock<ISecurity>();
+            securityMock.SetupGet(s => s.UserName).Returns("Peter");
+
+            var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), securityMock.Object);
+
+            var result = subject.Results(id).Result;
+
+            Assert.IsInstanceOfType(result, typeof(HttpStatusCodeResult));
+            Assert.AreEqual(403, (result as HttpStatusCodeResult).StatusCode);
+        }
+
+        [TestMethod]
+        public void Results_IdOK_ReturnsViewWithViewModel()
+        {
+            var id = Guid.NewGuid();
+            var survey = new Survey() { Id = id, Owner = new ApplicationUser() { UserName = "Tyler" } };
+            var moods = new[] { new Models.Mood() { Id = 1 }, new Models.Mood() { Id = 2 } };
+            var answer1 = new Answer() { MoodId = 1, SurveyId = id };
+            var answer2 = new Answer() { MoodId = 2, SurveyId = id };
+            var answers = new List<Answer>() { answer1, answer2 };
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            var surveyDataMock = new Mock<DbSet<Survey>>().SetupData(new List<Survey> { survey });
+            var moodDataMock = new Mock<DbSet<Models.Mood>>().SetupData(moods);
+            var answerDataMock = new Mock<DbSet<Answer>>().SetupData(answers);
+            dbMock.Setup(db => db.Surveys).Returns(surveyDataMock.Object);
+            dbMock.Setup(db => db.Moods).Returns(moodDataMock.Object);
+            dbMock.Setup(db => db.Answers).Returns(answerDataMock.Object);
+
+            var securityMock = new Mock<ISecurity>();
+            securityMock.SetupGet(s => s.UserName).Returns("Tyler");
+
+            var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), securityMock.Object);
+
+            var result = subject.Results(id).Result;
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            var model = (result as ViewResult).Model as ResultsViewModel;
+            Assert.IsNotNull(model);
+            Assert.AreSame(survey, model.Survey);
+            Assert.AreEqual(2, model.Answers.Count());
+            Assert.AreSame(answer1, model.Answers.ToList()[0]);
+            Assert.AreSame(answer2, model.Answers.ToList()[1]);
         }
 
         #endregion
