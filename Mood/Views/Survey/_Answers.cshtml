@@ -33,7 +33,7 @@
             var dataString = "";
             foreach(var answer in Model.Answers)
             {
-                dataString += $"{answer.Time.Value.ToString("f")}\t{answer.Mood.Description}\t{answer.Details}\n";
+                dataString += $"{answer.Time.Value.ToString("g")}\\t{answer.MoodId}\\t{answer.Details}\\n";
             }
         }
         var dataString = "@dataString";
