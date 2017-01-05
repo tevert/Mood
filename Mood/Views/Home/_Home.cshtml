@@ -1,9 +1,5 @@
 ﻿@model IEnumerable<Mood.Models.Survey>
-@{
-    ViewBag.Title = "Home";
-}
 <div class="row">
-<h1>Your Surveys:</h1>
     @foreach (var survey in Model)
     {
         <div class="panel panel-default">

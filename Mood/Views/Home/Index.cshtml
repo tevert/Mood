@@ -1,5 +1,10 @@
-﻿@section SPAViews {
-    @Html.Partial("_Home")
+﻿@model IEnumerable<Mood.Models.Survey>
+@{
+    ViewBag.Title = "Mood";
+}
+
+@section SPAViews {
+    @Html.Partial("_Home", Model)
 }
 
 @section Scripts{
