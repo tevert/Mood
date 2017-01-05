@@ -22,18 +22,6 @@ namespace Mood.Migrations
                 new Models.Mood() { Description = "Ok" },
                 new Models.Mood() { Description = "Fantastic" });
 
-            // Special change to migrate ownership of the original survey from Tyler to Jake
-            var guid = Guid.Parse("9f9f25f0-926a-4df9-89a3-08164ceea253");
-            var originalSurvey = context.Surveys.FirstOrDefault(s => s.Id == guid);
-            if (originalSurvey != null)
-            {
-                var jake = context.Users.FirstOrDefault(u => u.Email == "jacob.scherrer@centare.com");
-                if (jake != null)
-                {
-                    originalSurvey.Owner = jake;
-                }
-            }
-
             try
             {
                 context.SaveChanges();
