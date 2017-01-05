@@ -3,39 +3,60 @@
     ViewBag.Title = "Home";
 }
 <div class="row">
-    <h1>Your Surveys:</h1>
-        <div class="table">
-        @foreach (var survey in Model)
-        {
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.ActionLink(survey.Description, "View", "Survey", new { Id = survey.Id }, new { @class = "btn btn-link" })
+<h1>Your Surveys:</h1>
+    @foreach (var survey in Model)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4><a href="@Url.Action("Get", "Survey", new { Id = survey.Identifer })">@survey.Description</a></h4></div>
+            <div class="panel-body">
+                <div class="col-md-1">
+                    <a class="btn btn-default" href="@Url.Action("Results", "Survey", new { Id = survey.Identifer })"><span class="glyphicon glyphicon-signal"></span> Results</a>
                 </div>
-                <div class="col-md-2">
-                    <a class="btn btn-default glyphicon glyphicon-signal" href="@Url.Action("Results", "Survey", new { Id = survey.Id })"></a>
-                    <button type="button" class="btn btn-danger glyphicon glyphicon-trash" data-toggle="modal" data-target="#confimDelete@(survey.Id)"></button>
+                <div class="col-md-7">
+                    @using (Html.BeginForm("Name", "Survey", new { Id = survey.Identifer }, FormMethod.Post, new { }))
+                    {
+                        <div class="input-group">
+                            <span class="input-group-addon">@Url.Action("Get", "Survey", null, Request.Url.Scheme)/</span>
+                            @Html.TextBox("newName", survey.Identifer, new { @class = "form-control" })
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-save"></span></button>
+                                <button type="button" class="btn btn-default"
+                                        onclick="copyToClipboard('@Url.Action("Get", "Survey", new { Id = survey.Identifer }, Request.Url.Scheme)')">
+                                    <span class="glyphicon glyphicon-copy"></span>
+                                </button>
+                            </span>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-1 col-md-offset-3">
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confimDelete@(survey.Identifer)"><span class="glyphicon glyphicon-trash"></span> Delete</button>
                 </div>
             </div>
-            <hr/>
-        }
-        @using (Html.BeginForm("Create", "Survey"))
-        {
-            <div class="row">
-                <div class="col-md-4">
+        </div>
+    }
+    @using (Html.BeginForm("Create", "Survey"))
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>New Survey</h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-3">
                     @Html.TextBox("description", "How is your workday going?", new { @class = "form-control" })
                 </div>
                 <div class="col-md-2">
                     <button type="submit" value="" class="btn btn-success glyphicon glyphicon-plus" />
                 </div>
             </div>
-        }
+        </div>
+    }
 </div>
 
 
 
 @foreach (var survey in Model)
 {
-<div id="confimDelete@(survey.Id)" class="modal fade" role="dialog">
+<div id="confimDelete@(survey.Identifer)" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -44,7 +65,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                @Html.ActionLink("Delete", "Delete", "Survey", new { id = survey.Id }, new { @class = "btn btn-danger" })
+                @Html.ActionLink("Delete", "Delete", "Survey", new { id = survey.Identifer }, new { @class = "btn btn-danger" })
             </div>
         </div>
     </div>

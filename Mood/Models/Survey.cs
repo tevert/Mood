@@ -9,9 +9,13 @@ namespace Mood.Models
         [Key]
         public Guid Id { get; set; }
         
+        public string Name { get; set; }
+
         [Required]
         public ApplicationUser Owner { get; set; }
 
         public string Description { get; set; }
+
+        public string Identifer { get { return Name ?? Id.ToString(); } }
     }
 }

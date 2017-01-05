@@ -31,7 +31,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;__DEMO__,__DEMO_EXPERIMENTAL__</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -364,6 +364,10 @@
     <Compile Include="Migrations\201612291537304_AddingTextFieldToAnswers.Designer.cs">
       <DependentUpon>201612291537304_AddingTextFieldToAnswers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701050511046_AddingNamesToSurveys.cs" />
+    <Compile Include="Migrations\201701050511046_AddingNamesToSurveys.Designer.cs">
+      <DependentUpon>201701050511046_AddingNamesToSurveys.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Answer.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -470,7 +474,7 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Survey\View.cshtml" />
+    <Content Include="Views\Survey\Get.cshtml" />
     <Content Include="Views\Survey\_Moods.cshtml" />
     <Content Include="Views\Shared\_LayoutMinimal.cshtml" />
     <Content Include="Views\Home\IndexNotAuthenticated.cshtml" />
@@ -506,6 +510,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612291537304_AddingTextFieldToAnswers.resx">
       <DependentUpon>201612291537304_AddingTextFieldToAnswers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701050511046_AddingNamesToSurveys.resx">
+      <DependentUpon>201701050511046_AddingNamesToSurveys.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -22,7 +22,7 @@
             success: function (answer) {
                 self.flash("flash-green");
                 parentVM.moods
-                    .filter(function (mood) { return mood.value != self.value; })
+                    .filter(function (mood) { return mood.value !== self.value; })
                     .forEach(function (sibling) { sibling.flash("flash-fade"); });
                 setTimeout(function () {
                     parentVM.moods.forEach(function (mood) { mood.flash(""); });

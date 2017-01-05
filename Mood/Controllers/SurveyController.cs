@@ -41,9 +41,9 @@ namespace Mood.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> View(Guid id)
+        public async Task<ActionResult> Get(string id)
         {
-            var survey = await db.Surveys.Where(s => s.Id == id).FirstOrDefaultAsync();
+            var survey = await FindSurveyAsync(id);
             if (survey == null)
             {
                 return HttpNotFound();
@@ -65,14 +65,14 @@ namespace Mood.Controllers
             db.Surveys.Add(survey);
             await db.SaveChangesAsync();
 
-            return RedirectToAction("View", new { id = survey.Id });
+            return RedirectToAction("View", new { id = survey.Identifer });
         }
 
         [Authorize]
-        [HttpGet]
-        public async Task<ActionResult> Results(Guid id)
+        [HttpPost]
+        public async Task<ActionResult> Name(string id, string newName)
         {
-            var survey = await db.Surveys.Include(s => s.Owner).FirstOrDefaultAsync(s => s.Id == id);
+            var survey = await FindSurveyAsync(id);
             if (survey == null)
             {
                 return HttpNotFound();
@@ -83,6 +83,38 @@ namespace Mood.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
 
+            newName = newName.Trim();
+            if (String.IsNullOrWhiteSpace(newName))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var blockingSurvey = await FindSurveyAsync(newName);
+            if (blockingSurvey != null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            survey.Name = newName;
+            await db.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult> Results(string id)
+        {
+            var survey = await FindSurveyAsync(id);
+            if (survey == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (survey.Owner.UserName != security.UserName)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
 
             var answers = await db
                 .Answers
@@ -95,9 +127,9 @@ namespace Mood.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> Delete(Guid id)
+        public async Task<ActionResult> Delete(string id)
         {
-            var survey = await db.Surveys.Include(s => s.Owner).FirstOrDefaultAsync(s => s.Id == id);
+            var survey = await FindSurveyAsync(id);
             if (survey == null)
             {
                 return HttpNotFound();
@@ -121,10 +153,10 @@ namespace Mood.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Answer(Guid id, int moodId)
+        public async Task<ActionResult> Answer(string id, int moodId)
         {
             // First dig up our survey
-            var survey = await db.Surveys.FirstOrDefaultAsync(s => s.Id == id);
+            var survey = await FindSurveyAsync(id);
             if (survey == null)
             {
                 return HttpNotFound();
@@ -143,6 +175,22 @@ namespace Mood.Controllers
             await db.SaveChangesAsync();
 
             return Json(answer);
+        }
+
+        private async Task<Survey> FindSurveyAsync(string id)
+        {
+            Survey result = null;
+            Guid guid;
+            if (Guid.TryParse(id, out guid))
+            {
+                result = await db.Surveys.Include(s => s.Owner).FirstOrDefaultAsync(s => s.Id == guid);
+            }
+            else
+            {
+                result = await db.Surveys.Include(s => s.Owner).FirstOrDefaultAsync(s => s.Name == id);
+            }
+
+            return result;
         }
     }
 }

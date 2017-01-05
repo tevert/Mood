@@ -40,7 +40,7 @@
                 self.pendingRequest(false);
             }
         });
-    }
+    };
 
     self.reload = function () {
         setTimeout(function () {
@@ -50,7 +50,7 @@
                 self.reload();
             }
         }, 180000);
-    }
+    };
     self.reload();
 
     return self;

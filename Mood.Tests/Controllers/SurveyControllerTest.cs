@@ -63,7 +63,7 @@ namespace Mood.Tests.Controllers
 
             var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), Mock.Of<ISecurity>());
 
-            var result = subject.View(id).Result;
+            var result = subject.Get(id.ToString()).Result;
 
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
@@ -83,7 +83,7 @@ namespace Mood.Tests.Controllers
 
             var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), Mock.Of<ISecurity>());
 
-            var result = subject.View(id).Result;
+            var result = subject.Get(id.ToString()).Result;
 
             Assert.IsInstanceOfType(result, typeof(ViewResult));
             Assert.AreSame(survey, ((result as ViewResult).Model as SurveyViewModel).Survey);
@@ -109,7 +109,7 @@ namespace Mood.Tests.Controllers
 
             var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), Mock.Of<ISecurity>());
 
-            var result = subject.Answer(id, moodId).Result;
+            var result = subject.Answer(id.ToString(), moodId).Result;
 
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
@@ -130,7 +130,7 @@ namespace Mood.Tests.Controllers
 
             var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), Mock.Of<ISecurity>());
 
-            var result = subject.Answer(id, moodId).Result;
+            var result = subject.Answer(id.ToString(), moodId).Result;
 
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
@@ -157,7 +157,7 @@ namespace Mood.Tests.Controllers
 
             var subject = new SurveyController(dbMock.Object, timeMock.Object, Mock.Of<ISecurity>());
 
-            var result = subject.Answer(id, moodId).Result;
+            var result = subject.Answer(id.ToString(), moodId).Result;
 
             Assert.IsInstanceOfType(result, typeof(JsonResult));
             Assert.IsInstanceOfType((result as JsonResult).Data, typeof(Answer));
@@ -235,7 +235,7 @@ namespace Mood.Tests.Controllers
 
             var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), Mock.Of<ISecurity>());
 
-            var result = subject.Delete(id).Result;
+            var result = subject.Delete(id.ToString()).Result;
 
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
@@ -255,7 +255,7 @@ namespace Mood.Tests.Controllers
 
             var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), securityMock.Object);
 
-            var result = subject.Delete(id).Result;
+            var result = subject.Delete(id.ToString()).Result;
 
             Assert.IsInstanceOfType(result, typeof(HttpStatusCodeResult));
             Assert.AreEqual(403, (result as HttpStatusCodeResult).StatusCode);
@@ -284,7 +284,7 @@ namespace Mood.Tests.Controllers
 
             var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), securityMock.Object);
 
-            var result = subject.Delete(id).Result;
+            var result = subject.Delete(id.ToString()).Result;
 
             Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
             surveyDataMock.Verify(d => d.Remove(survey));
@@ -308,7 +308,7 @@ namespace Mood.Tests.Controllers
 
             var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), Mock.Of<ISecurity>());
 
-            var result = subject.Results(id).Result;
+            var result = subject.Results(id.ToString()).Result;
 
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
@@ -328,7 +328,7 @@ namespace Mood.Tests.Controllers
 
             var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), securityMock.Object);
 
-            var result = subject.Results(id).Result;
+            var result = subject.Results(id.ToString()).Result;
 
             Assert.IsInstanceOfType(result, typeof(HttpStatusCodeResult));
             Assert.AreEqual(403, (result as HttpStatusCodeResult).StatusCode);
@@ -357,7 +357,7 @@ namespace Mood.Tests.Controllers
 
             var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), securityMock.Object);
 
-            var result = subject.Results(id).Result;
+            var result = subject.Results(id.ToString()).Result;
 
             Assert.IsInstanceOfType(result, typeof(ViewResult));
             var model = (result as ViewResult).Model as ResultsViewModel;
