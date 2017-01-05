@@ -84,7 +84,12 @@ namespace Mood.Controllers
             }
 
 
-            var answers = await db.Answers.Include(a => a.Mood).Where(a => a.SurveyId == survey.Id).ToListAsync();
+            var answers = await db
+                .Answers
+                .Include(a => a.Mood)
+                .Where(a => a.SurveyId == survey.Id)
+                .OrderByDescending(a => a.Time)
+                .ToListAsync();
 
             return View(new ResultsViewModel() { Survey = survey, Answers = answers });
         }
