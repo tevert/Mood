@@ -65,7 +65,7 @@ namespace Mood.Controllers
             db.Surveys.Add(survey);
             await db.SaveChangesAsync();
 
-            return RedirectToAction("View", new { id = survey.Identifer });
+            return RedirectToAction("Get", new { id = survey.Identifer });
         }
 
         [Authorize]
