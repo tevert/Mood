@@ -1,35 +1,33 @@
 ﻿@model IEnumerable<Mood.Models.Survey>
+<h2>Surveys</h2>
 <div class="row">
-    @foreach (var survey in Model)
-    {
-        <div class="panel panel-default">
-            <div class="panel-heading"><h4><a href="@Url.Action("Get", "Survey", new { Id = survey.Identifer })">@survey.Description</a></h4></div>
-            <div class="panel-body">
-                <div class="col-md-1">
-                    <a class="btn btn-default" href="@Url.Action("Results", "Survey", new { Id = survey.Identifer })"><span class="glyphicon glyphicon-signal"></span> Results</a>
-                </div>
-                <div class="col-md-7">
-                    @using (Html.BeginForm("Name", "Survey", new { Id = survey.Identifer }, FormMethod.Post, new { }))
-                    {
-                        <div class="input-group">
-                            <span class="input-group-addon">@Url.Action("Get", "Survey", null, Request.Url.Scheme)/</span>
-                            @Html.TextBox("newName", survey.Identifer, new { @class = "form-control" })
-                            <span class="input-group-btn">
-                                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-save"></span></button>
-                                <button type="button" class="btn btn-default"
-                                        onclick="copyToClipboard('@Url.Action("Get", "Survey", new { Id = survey.Identifer }, Request.Url.Scheme)')">
-                                    <span class="glyphicon glyphicon-copy"></span>
-                                </button>
-                            </span>
-                        </div>
-                    }
-                </div>
-                <div class="col-md-1 col-md-offset-3">
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confimDelete@(survey.Identifer)"><span class="glyphicon glyphicon-trash"></span> Delete</button>
-                </div>
+    <!-- ko foreach: app.surveys -->
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4><a data-bind="text: $data.description(), attr: { href: '/Survey/Get/' + $data.identifier() }"></a></h4></div>
+        <div class="panel-body">
+            <div class="col-md-1">
+                <a class="btn btn-default" data-bind="attr: { href: '/Survey/Results/' + $data.identifier() }"><span class="glyphicon glyphicon-signal"></span> Results</a>
+            </div>
+            <div class="col-md-7">
+                <form method="post" data-bind="attr: { action: '/Survey/Name/' + $data.identifier() }">
+                    <div class="input-group">
+                        <span class="input-group-addon">@Url.Action("Get", "Survey", null, Request.Url.Scheme)/</span>
+                        <input type="text" class="form-control" name="newName" data-bind="value: $data.name"/>
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-floppy-save"></span></button>
+                            <button type="button" class="btn btn-default" data-bind="click: copyUrl"><span class="glyphicon glyphicon-copy"></span></button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-1 col-md-offset-3">
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-bind="attr: { 'data-target': '#confimDelete' + $data.identifier }">
+                    <span class="glyphicon glyphicon-trash"></span> Delete
+                </button>
             </div>
         </div>
-    }
+    </div>
+    <!-- /ko -->
     @using (Html.BeginForm("Create", "Survey"))
     {
         <div class="panel panel-default">
@@ -50,20 +48,23 @@
 
 
 
-@foreach (var survey in Model)
-{
-<div id="confimDelete@(survey.Identifer)" class="modal fade" role="dialog">
+<!-- ko foreach: app.surveys -->
+<div class="modal fade" role="dialog" data-bind="attr: {'id': 'confimDelete' + $data.identifier()}">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div classs="modal-header">
-                <h3>Are you sure you want to delete survey "@(survey.Description)"?</h3>
+                <h3>Are you sure you want to delete survey "<span data-bind="text: $data.description()"></span>"?</h3>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                @Html.ActionLink("Delete", "Delete", "Survey", new { id = survey.Identifer }, new { @class = "btn btn-danger" })
+                <a class="btn btn-danger" href="/Survey/Delete/" data-bind="attr: { href: '/Survey/Delete/' + $data.identifier() }">Delete</a>
             </div>
         </div>
     </div>
 </div>
-}
+<!-- /ko -->
+
+<script>
+    window.surveys = @Html.Raw(Json.Encode(Model))
+</script>

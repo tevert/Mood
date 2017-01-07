@@ -404,7 +404,10 @@
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\app\mood.viewmodel.js" />
+    <Content Include="Scripts\homeApp\homeApp.viewmodel.js" />
+    <Content Include="Scripts\homeApp\survey.viewmodel.js" />
+    <Content Include="Scripts\homeApp\_run.js" />
+    <Content Include="Scripts\surveyApp\mood.viewmodel.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -452,8 +455,8 @@
     <Content Include="Scripts\sammy-0.7.4.js" />
     <Content Include="Scripts\sammy-0.7.4.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Scripts\app\_run.js" />
-    <Content Include="Scripts\app\app.viewmodel.js" />
+    <Content Include="Scripts\surveyApp\_run.js" />
+    <Content Include="Scripts\surveyApp\surveyApp.viewmodel.js" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Home\_Home.cshtml" />

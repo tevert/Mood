@@ -18,12 +18,17 @@ namespace Mood
                 "~/Scripts/knockout-{version}.js",
                 "~/Scripts/knockout.validation.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/app").Include(
+            bundles.Add(new ScriptBundle("~/bundles/surveyApp").Include(
                 "~/Scripts/sammy-{version}.js",
-                "~/Scripts/app/common.js",
-                "~/Scripts/app/mood.viewmodel.js",
-                "~/Scripts/app/app.viewmodel.js",
-                "~/Scripts/app/_run.js"));
+                "~/Scripts/surveyApp/mood.viewmodel.js",
+                "~/Scripts/surveyApp/surveyApp.viewmodel.js",
+                "~/Scripts/surveyApp/_run.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/homeApp").Include(
+                "~/Scripts/sammy-{version}.js",
+                "~/Scripts/homeApp/survey.viewmodel.js",
+                "~/Scripts/homeApp/homeApp.viewmodel.js",
+                "~/Scripts/homeApp/_run.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/util").Include(
                 "~/Scripts/util/*.js"));

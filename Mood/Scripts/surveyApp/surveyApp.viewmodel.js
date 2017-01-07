@@ -1,4 +1,4 @@
-﻿function AppViewModel() {
+﻿function SurveyAppViewModel() {
     // Private state
     var self = this;
 
@@ -56,4 +56,4 @@
     return self;
 }
 
-var app = new AppViewModel();
+var app = new SurveyAppViewModel();
