@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace Mood
@@ -12,6 +8,12 @@ namespace Mood
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute(
+                name: "SurveyRoute",
+                url: "s/{id}",
+                defaults: new { controller = "Survey", action = "Get", id = UrlParameter.Optional }
+            );
 
             routes.MapRoute(
                 name: "Default",

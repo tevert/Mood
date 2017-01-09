@@ -56,7 +56,7 @@ namespace Mood.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> Create(string description = "Default")
+        public async Task<ActionResult> Create(string description)
         {
             var user = await db.Users.Where(u => u.UserName == security.UserName).FirstAsync();
             var guid = Guid.NewGuid();
@@ -65,7 +65,7 @@ namespace Mood.Controllers
             db.Surveys.Add(survey);
             await db.SaveChangesAsync();
 
-            return RedirectToAction("Get", new { id = survey.Identifer });
+            return RedirectToRoute("SurveyRoute", new { id = survey.Identifer });
         }
 
         [Authorize]

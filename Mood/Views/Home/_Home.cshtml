@@ -13,10 +13,10 @@
             <div class="col-md-7">
                 <form>
                     <div class="input-group">
-                        <span class="input-group-addon">@Url.Action("Get", "Survey", null, Request.Url.Scheme)/</span>
+                        <span class="input-group-addon">@Url.RouteUrl("SurveyRoute", null, Request.Url.Scheme)/</span>
                         <input type="text" class="form-control" name="name" data-bind="value: $data.name, attr: { placeholder: $data.id }"/>
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-default" data-bind="click: copyUrl.bind($data, '@Url.Action("Get", "Survey", null, Request.Url.Scheme)')"><span class="glyphicon glyphicon-copy"></span></button>
+                            <button type="button" class="btn btn-default" data-bind="click: copyUrl.bind($data, '@Url.RouteUrl("SurveyRoute", null, Request.Url.Scheme)')"><span class="glyphicon glyphicon-copy"></span></button>
                         </span>
                     </div>
                 </form>
