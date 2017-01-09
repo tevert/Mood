@@ -7,29 +7,34 @@
             <h4><a data-bind="text: $data.description(), attr: { href: '/Survey/Get/' + $data.identifier() }"></a></h4>
         </div>
         <div class="panel-body">
-            <div class="col-md-1">
-                <a class="btn btn-default" data-bind="attr: { href: '/Survey/Results/' + $data.identifier() }"><span class="glyphicon glyphicon-signal"></span> Results</a>
-            </div>
-            <div class="col-md-7">
-                <form>
+            <form>
+                <div class="col-md-2">
+                    <div class="btn-group-vertical">
+                        <a class="btn btn-default" data-bind="attr: { href: '/Survey/Results/' + $data.identifier() }"><span class="glyphicon glyphicon-signal"></span> Results</a>
+                        <label class="btn btn-default btn-sm">
+                            <input type="checkbox" checked data-bind="checked: publicResults" /> Public
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6">
                     <div class="input-group">
                         <span class="input-group-addon">@Url.RouteUrl("SurveyRoute", null, Request.Url.Scheme)/</span>
-                        <input type="text" class="form-control" name="name" data-bind="value: $data.name, attr: { placeholder: $data.id }"/>
+                        <input type="text" class="form-control" name="name" data-bind="value: $data.name, attr: { placeholder: $data.id }" />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" data-bind="click: copyUrl.bind($data, '@Url.RouteUrl("SurveyRoute", null, Request.Url.Scheme)')"><span class="glyphicon glyphicon-copy"></span></button>
                         </span>
                     </div>
-                </form>
-            </div>
-            <div class="col-md-4 text-right">
-                <button type="button" class="btn btn-default"
-                        data-bind="click: save.bind($data, '@Url.Action("Edit", "Survey", null, Request.Url.Scheme)')">
-                    <span class="glyphicon glyphicon-floppy-save"></span> Save
-                </button>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-bind="attr: { 'data-target': '#confimDelete' + $data.identifier() }">
-                    <span class="glyphicon glyphicon-trash"></span> Delete
-                </button>
-            </div>
+                </div>
+                <div class="col-md-4 text-right">
+                    <button type="button" class="btn btn-default"
+                            data-bind="click: save.bind($data, '@Url.Action("Edit", "Survey", null, Request.Url.Scheme)')">
+                        <span class="glyphicon glyphicon-floppy-save"></span> Save
+                    </button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-bind="attr: { 'data-target': '#confimDelete' + $data.identifier() }">
+                        <span class="glyphicon glyphicon-trash"></span> Delete
+                    </button>
+                </div>
+            </form>
         </div>
         <div class="panel-footer" data-bind="visible: error, text: error"></div>
     </div>

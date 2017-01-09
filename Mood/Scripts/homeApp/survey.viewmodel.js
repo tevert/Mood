@@ -4,6 +4,7 @@
     self.id = ko.observable(data.Id);
     self.description = ko.observable(data.Description);
     self.name = ko.observable(data.Name);
+    self.publicResults = ko.observable(data.PublicResults);
     self.identifier = ko.computed(function () { return self.name() || self.id() });
 
     self.flash = ko.observable();
@@ -21,7 +22,7 @@
             method: 'post',
             url: url,
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify({ name: self.name() }),
+            data: JSON.stringify({ name: self.name(), publicResults: self.publicResults() }),
             success: function (response) {
                 if (response.error) {
                     self.error(response.error);

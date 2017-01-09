@@ -368,6 +368,10 @@
     <Compile Include="Migrations\201701050511046_AddingNamesToSurveys.Designer.cs">
       <DependentUpon>201701050511046_AddingNamesToSurveys.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701092258437_AddingPublicResultsToggle.cs" />
+    <Compile Include="Migrations\201701092258437_AddingPublicResultsToggle.Designer.cs">
+      <DependentUpon>201701092258437_AddingPublicResultsToggle.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Answer.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -442,6 +446,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap-toggle.css" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\util\copyToClipboard.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -517,6 +522,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701050511046_AddingNamesToSurveys.resx">
       <DependentUpon>201701050511046_AddingNamesToSurveys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701092258437_AddingPublicResultsToggle.resx">
+      <DependentUpon>201701092258437_AddingPublicResultsToggle.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

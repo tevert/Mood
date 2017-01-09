@@ -99,13 +99,13 @@ namespace Mood.Controllers
                 }
             }
             survey.Name = newName;
+            survey.PublicResults = editDetails.PublicResults;
 
             await db.SaveChangesAsync();
 
             return Json(new { success = "saved" });
         }
-
-        [Authorize]
+        
         [HttpGet]
         public async Task<ActionResult> Results(string id)
         {
@@ -115,7 +115,8 @@ namespace Mood.Controllers
                 return HttpNotFound();
             }
 
-            if (survey.Owner.UserName != security.UserName)
+            if (!survey.PublicResults && 
+                (!security.IsAuthenticated || survey.Owner.UserName != security.UserName))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
