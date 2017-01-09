@@ -4,7 +4,7 @@
     <h1>@Model.Survey.Description</h1>
     <!-- ko foreach: app.moods -->
     <div data-bind="css: { first: $index() == 0, 'smiley-containers': true }">
-        <a data-bind="click: function() { $data.sendMood($parent) }"><img class="smiley" data-bind="attr:{src: $data.img}, css: $data.flash" /></a>
+        <a data-bind="click: function() { $data.sendMood($parent) }"><img class="smiley flashable" data-bind="attr:{src: $data.img}, css: $data.flash" /></a>
     </div>
     <!-- /ko -->
 </div>

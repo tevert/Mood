@@ -44,11 +44,13 @@ a:hover { /* Our no-url images should still have a clickable mouseover */
     max-height: 100%;
     max-width: 100%;
     border-radius: 100px;
-    transition: background 0.5s ease-in;
-    transition: opacity 0.5s ease-in;
 }
 
-.flash-green {
+.flashable {
+    transition: background 0.5s ease-in, opacity 0.5s ease-in;
+}
+
+.flashable.flash-green {
     transition: none;
     background: #668855;
 }

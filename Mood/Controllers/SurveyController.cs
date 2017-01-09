@@ -70,7 +70,7 @@ namespace Mood.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> Name(string id, string newName)
+        public async Task<ActionResult> Edit(string id, [System.Web.Http.FromBody] SurveyEditViewModel editDetails)
         {
             var survey = await FindSurveyAsync(id);
             if (survey == null)
@@ -83,19 +83,23 @@ namespace Mood.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
 
-            newName = newName.Trim();
-            if (String.IsNullOrWhiteSpace(newName))
+            string newName = null;
+            if (editDetails.Name != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+                newName = editDetails.Name.Trim();
+                if (String.IsNullOrWhiteSpace(newName))
+                {
+                    return Json(new { error = "Name must not be whitespace" });
+                }
 
-            var blockingSurvey = await FindSurveyAsync(newName);
-            if (blockingSurvey != null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var blockingSurvey = await FindSurveyAsync(newName);
+                if (blockingSurvey != null && blockingSurvey != survey)
+                {
+                    return Json(new { error = "That name is already taken" });
+                }
             }
-
             survey.Name = newName;
+
             await db.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");
