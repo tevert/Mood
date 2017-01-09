@@ -102,7 +102,7 @@ namespace Mood.Controllers
 
             await db.SaveChangesAsync();
 
-            return RedirectToAction("Index", "Home");
+            return Json(new { success = "saved" });
         }
 
         [Authorize]
