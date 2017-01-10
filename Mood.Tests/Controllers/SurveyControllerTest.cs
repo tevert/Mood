@@ -335,6 +335,41 @@ namespace Mood.Tests.Controllers
         }
 
         [TestMethod]
+        public void Results_PublicResultsAnonymousUser_ReturnsViewWithViewModel()
+        {
+            var id = Guid.NewGuid();
+            var survey = new Survey() { Id = id, PublicResults = true, Owner = new ApplicationUser() { UserName = "Tyler" } };
+            var moods = new[] { new Models.Mood() { Id = 1 }, new Models.Mood() { Id = 2 } };
+            var answer1 = new Answer() { MoodId = 1, SurveyId = id };
+            var answer2 = new Answer() { MoodId = 2, SurveyId = id };
+            var answers = new List<Answer>() { answer1, answer2 };
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            var surveyDataMock = new Mock<DbSet<Survey>>().SetupData(new List<Survey> { survey });
+            var moodDataMock = new Mock<DbSet<Models.Mood>>().SetupData(moods);
+            var answerDataMock = new Mock<DbSet<Answer>>().SetupData(answers);
+            dbMock.Setup(db => db.Surveys).Returns(surveyDataMock.Object);
+            dbMock.Setup(db => db.Moods).Returns(moodDataMock.Object);
+            dbMock.Setup(db => db.Answers).Returns(answerDataMock.Object);
+
+            var securityMock = new Mock<ISecurity>();
+            securityMock.SetupGet(s => s.UserName).Returns("Peter");
+            securityMock.SetupGet(s => s.IsAuthenticated).Returns(true);
+
+            var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), securityMock.Object);
+
+            var result = subject.Results(id.ToString()).Result;
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            var model = (result as ViewResult).Model as ResultsViewModel;
+            Assert.IsNotNull(model);
+            Assert.AreSame(survey, model.Survey);
+            Assert.AreEqual(2, model.Answers.Count());
+            Assert.AreSame(answer1, model.Answers.ToList()[0]);
+            Assert.AreSame(answer2, model.Answers.ToList()[1]);
+        }
+
+        [TestMethod]
         public void Results_IdOK_ReturnsViewWithViewModel()
         {
             var id = Guid.NewGuid();
@@ -354,6 +389,7 @@ namespace Mood.Tests.Controllers
 
             var securityMock = new Mock<ISecurity>();
             securityMock.SetupGet(s => s.UserName).Returns("Tyler");
+            securityMock.SetupGet(s => s.IsAuthenticated).Returns(true);
 
             var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), securityMock.Object);
 
@@ -492,6 +528,50 @@ namespace Mood.Tests.Controllers
 
             Assert.IsInstanceOfType(result, typeof(JsonResult));
             Assert.AreEqual("NewName", survey.Name);
+            dbMock.Verify(d => d.SaveChangesAsync());
+        }
+
+        [TestMethod]
+        public void Edit_MakeResultsPublic_MakesResultsPublic()
+        {
+            var id = Guid.NewGuid();
+            var survey = new Survey() { Id = id, PublicResults = false, Owner = new ApplicationUser() { UserName = "Tyler" } };
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            var surveyDataMock = new Mock<DbSet<Survey>>().SetupData(new List<Survey> { survey });
+            dbMock.Setup(db => db.Surveys).Returns(surveyDataMock.Object);
+
+            var securityMock = new Mock<ISecurity>();
+            securityMock.SetupGet(s => s.UserName).Returns("Tyler");
+
+            var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), securityMock.Object);
+
+            var result = subject.Edit(id.ToString(), new SurveyEditViewModel() { PublicResults = true }).Result;
+
+            Assert.IsInstanceOfType(result, typeof(JsonResult));
+            Assert.AreEqual(true, survey.PublicResults);
+            dbMock.Verify(d => d.SaveChangesAsync());
+        }
+
+        [TestMethod]
+        public void Edit_MakeResultsPrivate_MakesResultsPrivate()
+        {
+            var id = Guid.NewGuid();
+            var survey = new Survey() { Id = id, PublicResults = true, Owner = new ApplicationUser() { UserName = "Tyler" } };
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            var surveyDataMock = new Mock<DbSet<Survey>>().SetupData(new List<Survey> { survey });
+            dbMock.Setup(db => db.Surveys).Returns(surveyDataMock.Object);
+
+            var securityMock = new Mock<ISecurity>();
+            securityMock.SetupGet(s => s.UserName).Returns("Tyler");
+
+            var subject = new SurveyController(dbMock.Object, Mock.Of<IDateTimeService>(), securityMock.Object);
+
+            var result = subject.Edit(id.ToString(), new SurveyEditViewModel() { PublicResults = false }).Result;
+
+            Assert.IsInstanceOfType(result, typeof(JsonResult));
+            Assert.AreEqual(false, survey.PublicResults);
             dbMock.Verify(d => d.SaveChangesAsync());
         }
 
