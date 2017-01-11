@@ -1,6 +1,7 @@
 ﻿using Mood.Migrations;
 using Mood.Models;
 using Mood.Services;
+using Mood.Services.Exceptions;
 using Mood.ViewModels;
 using System;
 using System.Data.Entity;
@@ -14,10 +15,10 @@ namespace Mood.Controllers
     public class SurveyController : Controller
     {
         private IApplicationDBContext db;
-        private IDateTimeService time;
         private ISecurity security;
+        private ISurveyService surveys;
 
-        public SurveyController(IApplicationDBContext db, IDateTimeService time, ISecurity security)
+        public SurveyController(IApplicationDBContext db, ISurveyService surveys, ISecurity security)
         {
             if (db == null)
             {
@@ -26,24 +27,23 @@ namespace Mood.Controllers
 
             this.db = db;
 
-            if (time == null)
-            {
-                throw new ArgumentNullException(nameof(time));
-            }
-
-            this.time = time;
-
             if (security == null)
             {
                 throw new ArgumentNullException(nameof(security));
             }
             this.security = security;
+
+            if (surveys == null)
+            {
+                throw new ArgumentNullException(nameof(surveys));
+            }
+            this.surveys = surveys;
         }
 
         [HttpGet]
         public async Task<ActionResult> Get(string id)
         {
-            var survey = await FindSurveyAsync(id);
+            var survey = await surveys.FindAsync(id);
             if (survey == null)
             {
                 return HttpNotFound();
@@ -62,17 +62,16 @@ namespace Mood.Controllers
             var guid = Guid.NewGuid();
             var survey = new Survey() { Description = description, Owner = user, Id = guid };
 
-            db.Surveys.Add(survey);
-            await db.SaveChangesAsync();
+            await surveys.AddAsync(survey);
 
-            return RedirectToRoute("SurveyRoute", new { id = survey.Identifer });
+            return RedirectToRoute("SurveyRoute", new { id = survey.Identifier });
         }
 
         [Authorize]
         [HttpPost]
         public async Task<ActionResult> Edit(string id, [System.Web.Http.FromBody] SurveyEditViewModel editDetails)
         {
-            var survey = await FindSurveyAsync(id);
+            var survey = await surveys.FindAsync(id);
             if (survey == null)
             {
                 return HttpNotFound();
@@ -83,58 +82,22 @@ namespace Mood.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
 
-            string newName = null;
-            if (editDetails.Name != null)
+            try
             {
-                newName = editDetails.Name.Trim();
-                if (String.IsNullOrWhiteSpace(newName))
-                {
-                    return Json(new { error = "Name must not be whitespace" });
-                }
-
-                var blockingSurvey = await FindSurveyAsync(newName);
-                if (blockingSurvey != null && blockingSurvey != survey)
-                {
-                    return Json(new { error = "That name is already taken" });
-                }
+                await surveys.EditAsync(survey, editDetails);
             }
-            survey.Name = newName;
-            survey.PublicResults = editDetails.PublicResults;
-
-            await db.SaveChangesAsync();
+            catch (SurveyException e)
+            {
+                return Json(new { error = e.Message });
+            }
 
             return Json(new { success = "saved" });
-        }
-        
-        [HttpGet]
-        public async Task<ActionResult> Results(string id)
-        {
-            var survey = await FindSurveyAsync(id);
-            if (survey == null)
-            {
-                return HttpNotFound();
-            }
-
-            if (!survey.PublicResults && 
-                (!security.IsAuthenticated || survey.Owner.UserName != security.UserName))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
-            }
-
-            var answers = await db
-                .Answers
-                .Include(a => a.Mood)
-                .Where(a => a.SurveyId == survey.Id)
-                .OrderByDescending(a => a.Time)
-                .ToListAsync();
-
-            return View(new ResultsViewModel() { Survey = survey, Answers = answers });
         }
 
         [Authorize]
         public async Task<ActionResult> Delete(string id)
         {
-            var survey = await FindSurveyAsync(id);
+            var survey = await surveys.FindAsync(id);
             if (survey == null)
             {
                 return HttpNotFound();
@@ -145,57 +108,9 @@ namespace Mood.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
 
-            var answers = await db.Answers.Where(a => a.SurveyId == survey.Id).ToListAsync();
-            foreach (var answer in answers)
-            {
-                db.Answers.Remove(answer);
-            }
-            
-            db.Surveys.Remove(survey);
-            await db.SaveChangesAsync();
+            await surveys.DeleteAsync(survey);
 
             return RedirectToAction("Index", "Home");
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Answer(string id, int moodId)
-        {
-            // First dig up our survey
-            var survey = await FindSurveyAsync(id);
-            if (survey == null)
-            {
-                return HttpNotFound();
-            }
-
-            // Next check the mood
-            var mood = await db.Moods.FirstOrDefaultAsync(m => m.Id == moodId);
-            if (mood == null)
-            {
-                return HttpNotFound();
-            }
-
-            // OK, log the hit
-            var answer = new Answer() { Mood = mood, Survey = survey, Time = time.Now() };
-            db.Answers.Add(answer);
-            await db.SaveChangesAsync();
-
-            return Json(answer);
-        }
-
-        private async Task<Survey> FindSurveyAsync(string id)
-        {
-            Survey result = null;
-            Guid guid;
-            if (Guid.TryParse(id, out guid))
-            {
-                result = await db.Surveys.Include(s => s.Owner).FirstOrDefaultAsync(s => s.Id == guid);
-            }
-            else
-            {
-                result = await db.Surveys.Include(s => s.Owner).FirstOrDefaultAsync(s => s.Name == id);
-            }
-
-            return result;
         }
     }
 }

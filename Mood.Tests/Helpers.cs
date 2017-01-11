@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 
 namespace Mood.Tests
 {
@@ -14,6 +15,15 @@ namespace Mood.Tests
             catch (T ex)
             {
                 return ex;
+            }
+            catch (AggregateException ex)
+            {
+                var tEx = ex.InnerExceptions.OfType<T>().FirstOrDefault();
+                if (tEx == null)
+                {
+                    throw;
+                }
+                return tEx;
             }
 
             Assert.Fail($"Expected exception of type {typeof(T)}, but did not encounter.");

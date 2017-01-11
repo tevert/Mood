@@ -8,7 +8,7 @@
 
     self.pendingRequest = ko.observable(false);
 
-    self.sendMood = function (parentVM) {
+    self.sendMood = function (parentVM, url) {
         if (self.flash()) {
             return;
         }
@@ -16,9 +16,9 @@
 
         $.ajax({
             method: 'put',
-            url: window.location.origin + "/Survey/Answer/" + window.location.href.split('/').pop(),
+            url: url,
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify({ moodId: self.value, details: parentVM.details() }),
+            data: JSON.stringify({ details: parentVM.details() }),
             success: function (answer) {
                 self.flash("flash-green");
                 parentVM.moods

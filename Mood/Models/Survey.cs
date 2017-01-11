@@ -18,6 +18,6 @@ namespace Mood.Models
 
         public bool PublicResults { get; set; }
 
-        public string Identifer { get { return Name ?? Id.ToString(); } }
+        public string Identifier { get { return Name ?? Id.ToString(); } }
     }
 }

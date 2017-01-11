@@ -119,6 +119,7 @@
     <Compile Include="Controllers\AnswerControllerTest.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\SurveyServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
