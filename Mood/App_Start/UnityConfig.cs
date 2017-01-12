@@ -28,7 +28,7 @@ namespace Mood
 			container = new UnityContainer();
 
             container.RegisterType<DbContext, ApplicationDBContext>();
-            container.RegisterType<IApplicationDBContext, ApplicationDBContext>();
+            container.RegisterType<IApplicationDBContext, ApplicationDBContext>(new PerRequestLifetimeManager());
             container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>();
             container.RegisterType<UserManager<ApplicationUser>>();
             container.RegisterType<IAuthenticationManager>(new InjectionFactory(x => HttpContext.Current.GetOwinContext().Authentication));
