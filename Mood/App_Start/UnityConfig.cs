@@ -34,6 +34,7 @@ namespace Mood
             container.RegisterType<IAuthenticationManager>(new InjectionFactory(x => HttpContext.Current.GetOwinContext().Authentication));
             container.RegisterType<IDateTimeService, DateTimeService>();
             container.RegisterType<ISecurity, Security>();
+            container.RegisterType<ISurveyService, SurveyService>();
 
             DependencyResolver.SetResolver(new Microsoft.Practices.Unity.Mvc.UnityDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
