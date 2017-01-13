@@ -36,6 +36,11 @@ namespace Mood.Services
 
         public async Task DeleteAsync(Survey survey)
         {
+            if (survey == null)
+            {
+                throw new ArgumentNullException(nameof(survey));
+            }
+
             var answers = await db.Answers.Where(a => a.SurveyId == survey.Id).ToListAsync();
             foreach (var answer in answers)
             {
@@ -48,6 +53,15 @@ namespace Mood.Services
 
         public async Task EditAsync(Survey survey, SurveyEditViewModel newValues)
         {
+            if (survey == null)
+            {
+                throw new ArgumentNullException(nameof(survey));
+            }
+            if (newValues == null)
+            {
+                throw new ArgumentNullException(nameof(newValues));
+            }
+
             string newName = null;
             if (newValues.Name != null)
             {
