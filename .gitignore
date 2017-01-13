@@ -163,6 +163,9 @@ PublishScripts/
 *.nuget.props
 *.nuget.targets
 
+# Bower Packages
+**/bower_components/*
+
 # Microsoft Azure Build Output
 csx/
 *.build.csdef
