@@ -163,9 +163,6 @@ PublishScripts/
 *.nuget.props
 *.nuget.targets
 
-# Bower Packages
-**/bower_components/*
-
 # Microsoft Azure Build Output
 csx/
 *.build.csdef
@@ -196,6 +193,7 @@ ClientBin/
 *.pfx
 *.publishsettings
 node_modules/
+Mood/Scripts/dep
 orleans.codegen.cs
 
 # Since there are multiple workflows, uncomment next line to ignore bower_components

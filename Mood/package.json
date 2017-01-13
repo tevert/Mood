@@ -1,0 +1,31 @@
+{
+  "name": "mood",
+  "version": "1.0.0",
+  "description": "A simple moodboard for quick and easy feedback",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tevert/Mood.git"
+  },
+  "keywords": [
+    "Mood",
+    "feedback"
+  ],
+  "author": "tevert",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tevert/Mood/issues"
+  },
+  "homepage": "https://github.com/tevert/Mood#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1",
+    "knockout": "^3.4.1"
+  },
+  "devDependencies": {
+    "dep-linker": "^1.0.24"
+  }
+}
