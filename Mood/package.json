@@ -27,6 +27,7 @@
     "knockout": "^3.4.1"
   },
   "devDependencies": {
-    "dep-linker": "^1.0.24"
+    "dep-linker": "^1.0.24",
+    "grunt": "^1.0.1"
   }
 }
