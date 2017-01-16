@@ -134,6 +134,7 @@ namespace Mood.Tests.Controllers
         {
             var id = Guid.NewGuid();
             var moodId = 10;
+            var details = "Test details";
 
             var surveysMock = new Mock<ISurveyService>();
             surveysMock.Setup(s => s.FindAsync(id.ToString())).ReturnsAsync((Survey)null);
@@ -142,7 +143,7 @@ namespace Mood.Tests.Controllers
 
             var subject = new AnswerController(dbMock.Object, Mock.Of<ISurveyService>(), Mock.Of<IDateTimeService>(), Mock.Of<ISecurity>());
 
-            var result = subject.Create(id.ToString(), moodId).Result;
+            var result = subject.Create(id.ToString(), moodId, details).Result;
 
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
@@ -154,6 +155,7 @@ namespace Mood.Tests.Controllers
             var moodId = 5;
             var survey = new Survey() { Id = id };
             var moods = new List<Models.Mood>() { new Models.Mood() { Id = 10 }, new Models.Mood() { Id = 20 } };
+            var details = "Test details";
 
             var surveysMock = new Mock<ISurveyService>();
             surveysMock.Setup(s => s.FindAsync(id.ToString())).ReturnsAsync(survey);
@@ -164,7 +166,7 @@ namespace Mood.Tests.Controllers
 
             var subject = new AnswerController(dbMock.Object, surveysMock.Object, Mock.Of<IDateTimeService>(), Mock.Of<ISecurity>());
 
-            var result = subject.Create(id.ToString(), moodId).Result;
+            var result = subject.Create(id.ToString(), moodId, details).Result;
 
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
@@ -177,6 +179,7 @@ namespace Mood.Tests.Controllers
             var survey = new Survey() { Id = id };
             var moods = new List<Models.Mood>() { new Models.Mood() { Id = moodId }, new Models.Mood() { Id = 20 } };
             var time = DateTime.Now;
+            var details = "Test details";
 
             var timeMock = new Mock<IDateTimeService>();
             timeMock.Setup(t => t.Now()).Returns(time);
@@ -192,7 +195,7 @@ namespace Mood.Tests.Controllers
 
             var subject = new AnswerController(dbMock.Object, surveysMock.Object, timeMock.Object, Mock.Of<ISecurity>());
 
-            var result = subject.Create(id.ToString(), moodId).Result;
+            var result = subject.Create(id.ToString(), moodId, details).Result;
 
             Assert.IsInstanceOfType(result, typeof(JsonResult));
             Assert.IsInstanceOfType((result as JsonResult).Data, typeof(Answer));
@@ -201,7 +204,7 @@ namespace Mood.Tests.Controllers
             Assert.AreSame(moods[0], answer.Mood);
             Assert.AreEqual(time, answer.Time);
 
-            answersDataMock.Verify(d => d.Add(It.Is<Answer>(a => a.Mood == moods[0] && a.Survey == survey && a.Time == time)));
+            answersDataMock.Verify(d => d.Add(It.Is<Answer>(a => a.Mood == moods[0] && a.Survey == survey && a.Time == time && a.Details == details)));
             dbMock.Verify(db => db.SaveChangesAsync());
         }
 

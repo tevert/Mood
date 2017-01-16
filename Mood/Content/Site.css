@@ -71,6 +71,30 @@ a:hover { /* Our no-url images should still have a clickable mouseover */
     object-fit: contain;
 }
 
+.details-button {
+	margin-left: 0;
+	width: 50%;
+}
+
+.h2-vertical-centered {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+@keyframes growing-text-animation {
+	0% {
+		width: 0%;
+	}
+	100% {
+		width: 100%;
+	}
+}
+
+.growing-text {
+	animation: growing-text-animation;
+	animation-duration: 1s;
+}
+
 @media only screen and (max-width: 767px) {
     .nofloat {
         float: none;
