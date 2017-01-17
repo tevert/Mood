@@ -6,6 +6,7 @@ using Mood.Migrations;
 using Mood.Models;
 using Mood.Services;
 using System;
+using System.Configuration;
 using System.Data.Entity;
 using System.Web;
 using System.Web.Http;
@@ -35,6 +36,8 @@ namespace Mood
             container.RegisterType<IDateTimeService, DateTimeService>();
             container.RegisterType<ISecurity, Security>();
             container.RegisterType<ISurveyService, SurveyService>();
+            container.RegisterType<IEmailService, EmailService>(
+                new InjectionConstructor(ConfigurationManager.AppSettings["SendGridApiKey"], ConfigurationManager.AppSettings["SendGridFromAddress"]));
 
             DependencyResolver.SetResolver(new Microsoft.Practices.Unity.Mvc.UnityDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);

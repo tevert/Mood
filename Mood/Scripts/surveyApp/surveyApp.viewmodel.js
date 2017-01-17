@@ -9,38 +9,18 @@
     
     self.moods = window.moods.map(function (moodModel) {
         return new MoodViewModel(moodModel.Id, window.location.origin + '/Content/Images/' + moodModel.Description + '.png');
-    });
+	});
+
+	self.showDetails = function () {
+		$("#detailsButton").addClass("hidden");
+		$("#details").removeClass("hidden");
+	};
 
     self.pendingEdit = ko.computed(function () {
         return self.details ||
             self.pendingRequest() ||
             self.moods.some(function (mood) { return mood.pendingRequest(); });
     });
-
-    self.submitDetails = function () {
-        self.pendingRequest(true);
-
-        if (!self.lastAnswer()) {
-            self.showInstructions(true);
-            return;
-        }
-        self.showInstructions(false);
-
-        $.ajax({
-            method: 'put',
-            url: window.location.origin + "/Answer/Edit/" + self.lastAnswer().Id,
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify({ details: self.details() }),
-            success: function () {
-                self.details("");
-                self.lastAnswer(null);
-                self.pendingEdit = false;
-            },
-            complete: function () {
-                self.pendingRequest(false);
-            }
-        });
-    };
 
     self.reload = function () {
         setTimeout(function () {
@@ -51,7 +31,7 @@
             }
         }, 180000);
     };
-    self.reload();
+	self.reload();
 
     return self;
 }

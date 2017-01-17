@@ -67,7 +67,7 @@ namespace Mood.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Create(string surveyId, int moodId)
+        public async Task<ActionResult> Create(string surveyId, int moodId, string details)
         {
             // First dig up our survey
             var survey = await surveys.FindAsync(surveyId);
@@ -84,7 +84,7 @@ namespace Mood.Controllers
             }
 
             // OK, log the hit
-            var answer = new Answer() { Mood = mood, Survey = survey, Time = time.Now() };
+            var answer = new Answer() { Mood = mood, Survey = survey, Time = time.Now(), Details = details };
             db.Answers.Add(answer);
             await db.SaveChangesAsync();
 
