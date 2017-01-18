@@ -1,5 +1,7 @@
-﻿using SendGrid;
+﻿using Mood.Models;
+using SendGrid;
 using SendGrid.Helpers.Mail;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Mood.Services
@@ -15,14 +17,14 @@ namespace Mood.Services
             this.systemEmail = systemEmail;
         }
 
-        public async Task<dynamic> SendEmailAsync(string recipient, string content)
+        public async Task<dynamic> SendEmailAsync(string recipient, string subjectLine, string content)
         {
             dynamic sg = new SendGridAPIClient(apiKey); // SendGrid's client is a giant tree of dynamics, wtf
 
             Email from = new Email(systemEmail);
-            string subject = "Sending with SendGrid is Fun";
+            string subject = subjectLine;
             Email to = new Email(recipient);
-            Content contentBlock = new Content("text/plain", content);
+            Content contentBlock = new Content("text/html", content);
             Mail mail = new Mail(from, subject, to, contentBlock);
 
             return await sg.client.mail.send.post(requestBody: mail.Get());
