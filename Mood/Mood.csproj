@@ -510,7 +510,6 @@
     <Content Include="Views\Home\_HomeNotAuthenticated.cshtml" />
     <Content Include="Views\Survey\Results.cshtml" />
     <Content Include="Views\Survey\_Answers.cshtml" />
-    <Content Include="Overrides.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
