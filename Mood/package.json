@@ -4,8 +4,6 @@
   "description": "A simple moodboard for quick and easy feedback",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "grunt link-dep"
   },
   "repository": {
     "type": "git",
@@ -25,9 +23,5 @@
     "bootstrap": "^3.3.7",
     "jquery": "^3.1.1",
     "knockout": "^3.4.1"
-  },
-  "devDependencies": {
-    "dep-linker": "^1.0.24",
-    "grunt": "^1.0.1"
   }
 }
