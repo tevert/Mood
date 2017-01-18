@@ -48,8 +48,9 @@ namespace Mood.Controllers.Api
 
         private async Task<dynamic> SendEmail(ApplicationUser owner)
         {
-            var subject = $"Mood Daily Summary for {time.Now().ToShortDateString()}";
-            var content = $"<html><head></head><body><h1>Mood summary for {time.Now().ToShortDateString()}</h1>";
+            var previousDate = time.Now().AddDays(-1);
+            var subject = $"Mood Daily Summary for {previousDate.ToShortDateString()}";
+            var content = $"<html><head></head><body><h1>Mood summary for {previousDate.ToShortDateString()}</h1>";
             var surveys = db.Surveys.Where(s => s.Owner.Id == owner.Id).ToList();
             foreach (var survey in surveys)
             {
@@ -60,7 +61,7 @@ namespace Mood.Controllers.Api
                 var potentialAnswers = db.Answers.ToList();
                 foreach (var answer in potentialAnswers)
                 {
-                    if (answer.SurveyId == survey.Id && answer.Time.Value.Date == time.Now().Date)
+                    if (answer.SurveyId == survey.Id && answer.Time.Value.Date == previousDate.Date)
                     {
                         dailyAnswers.Add(answer);
                     }
