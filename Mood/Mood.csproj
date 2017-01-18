@@ -405,6 +405,7 @@
     <Compile Include="Services\SurveyService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Util\Extensions.cs" />
+    <Compile Include="Util\UrlConfig.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="ViewModels\ResultsViewModel.cs" />

@@ -4,6 +4,6 @@ namespace Mood.Services
 {
     public interface IEmailService
     {
-        Task<dynamic> SendEmailAsync(string recipient, string content);
+        Task<dynamic> SendEmailAsync(string recipient, string subject, string content);
     }
 }
