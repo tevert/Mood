@@ -39,9 +39,6 @@ namespace Mood
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  $"{cssDepRoot}/bootstrap/dist/css/bootstrap.css",
                  "~/Content/Site.css"));
-
-            //bundles.Add(new Bundle("~/bundles/audio").Include(
-            //    "~/Content/Sounds/ping.mp3"));
         }
     }
 }

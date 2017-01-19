@@ -39,7 +39,8 @@
 		});
 	};
 
-	self.ping = new Audio('ping.mp3');
+	self.ping = new Audio(window.location.origin + '/Content/Sounds/smw_coin.wav');
+	self.thankYou = new Audio(window.location.origin + '/Content/Sounds/ww_beedle_thankyou.mp3');
 
     return self;
 }
