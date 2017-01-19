@@ -12,6 +12,10 @@ namespace Mood
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                 $"{jsDepRoot}/jquery/jquery.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
+                "~/Scripts/jquery.unobtrusive*",
+                "~/Scripts/jquery.validate*"));
+
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
                 $"{jsDepRoot}/knockout/knockout-latest.js"));
 
