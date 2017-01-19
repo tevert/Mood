@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using Mood.Models;
+using ApplicationInsights.OwinExtensions;
 
 [assembly: OwinStartup(typeof(Mood.Startup))]
 
@@ -19,6 +20,8 @@ namespace Mood
     {
         public void Configuration(IAppBuilder app)
         {
+            app.UseApplicationInsights();
+
             // Configure the db context, user manager and signin manager to use a single instance per request
             var di = UnityConfig.GetConfiguredContainer();
             app.CreatePerOwinContext(() => DependencyResolver.Current.GetService<ApplicationDBContext>());
