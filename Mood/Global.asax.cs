@@ -11,7 +11,7 @@ namespace Mood
 {
     public class MvcApplication : HttpApplication
     {
-        bool isMapperInit;
+        private bool isUrlConfigDone = false;
 
         protected void Application_Start()
         {
@@ -21,22 +21,22 @@ namespace Mood
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Migrations.Configuration.Initialize(ConfigurationManager.AppSettings["MigrateDatabaseToLatestVersion"]);
-            isMapperInit = false;
+            AppInsightsConfig.Initialize();
         }
 
         protected void Application_BeginRequest(object source, EventArgs e)
         {
             var initLock = new object();
-            if (!isMapperInit)
+            if (!isUrlConfigDone)
             {
                 lock (initLock)
                 {
-                    if (!isMapperInit)
+                    if (!isUrlConfigDone)
                     {
                         var baseUrl = Context.Request.Url.GetLeftPart(UriPartial.Authority);
                         UrlConfig.Url = baseUrl;
                     }
-                    isMapperInit = true;
+                    isUrlConfigDone = true;
                 }
             }
         }

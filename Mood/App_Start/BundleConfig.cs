@@ -32,9 +32,6 @@ namespace Mood
             bundles.Add(new ScriptBundle("~/bundles/util").Include(
                 "~/Scripts/util/*.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/global").Include(
-                "~/Scripts/globals.js"));
-
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                 $"{jsDepRoot}/bootstrap/bootstrap.js",
                 "~/Scripts/respond.js"));
