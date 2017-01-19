@@ -11,7 +11,10 @@
 	<h2></h2>
     <!-- ko foreach: app.moods -->
     <div data-bind="css: { first: $index() == 0, 'smiley-containers': true }">
-        <a data-bind="click: function() { $data.sendMood($parent, '@Url.Action("Create", "Answer")?surveyId=@Model.Survey.Identifier&moodId=' + $data.value) }">
+        <a data-bind="click: function() { 
+            ping.play();
+            $data.sendMood($parent, '@Url.Action("Create", "Answer")?surveyId=@Model.Survey.Identifier&moodId=' + $data.value); 
+           }">
             <img class="smiley flashable" data-bind="attr:{src: $data.img}, css: $data.flash" />
         </a>
     </div>

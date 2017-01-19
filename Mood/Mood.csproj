@@ -421,7 +421,8 @@
     <Content Include="Content\Images\Miffed.png" />
     <Content Include="Content\Images\Angry.png" />
     <Content Include="Content\Site.css" />
-    <Content Include="Fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\Sounds\ping.mp3" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="gulpfile.js" />
     <Content Include="Scripts\homeApp\homeApp.viewmodel.js" />

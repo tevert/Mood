@@ -36,8 +36,10 @@
             complete: function () {
 				self.pendingRequest(false);
             }
-        });
+		});
 	};
+
+	self.ping = new Audio('ping.mp3');
 
     return self;
 }

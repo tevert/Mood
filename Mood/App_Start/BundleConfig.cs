@@ -12,6 +12,10 @@ namespace Mood
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                 $"{jsDepRoot}/jquery/dist/jquery.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
+                "~/Scripts/jquery.unobtrusive*",
+                "~/Scripts/jquery.validate*"));
+
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
                 $"{jsDepRoot}/knockout/build/output/knockout-latest.js"));
 
@@ -35,6 +39,9 @@ namespace Mood
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  $"{cssDepRoot}/bootstrap/dist/css/bootstrap.css",
                  "~/Content/Site.css"));
+
+            //bundles.Add(new Bundle("~/bundles/audio").Include(
+            //    "~/Content/Sounds/ping.mp3"));
         }
     }
 }
