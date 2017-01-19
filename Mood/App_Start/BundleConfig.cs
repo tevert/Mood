@@ -10,7 +10,7 @@ namespace Mood
             var jsDepRoot = "~/Scripts/vendor";
             var cssDepRoot = "~/Content/vendor";
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                $"{jsDepRoot}/jquery/jquery.js"));
+                $"{jsDepRoot}/jquery/jquery.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                 "~/Scripts/jquery.unobtrusive*",
@@ -37,7 +37,7 @@ namespace Mood
                 "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                 $"{cssDepRoot}/bootstrap/bootstrap.css",
+                 $"{cssDepRoot}/bootstrap.css",
                  "~/Content/Site.css"));
         }
     }
