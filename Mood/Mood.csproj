@@ -614,12 +614,11 @@
     <Content Include="Views\Shared\_LayoutMinimal.cshtml" />
     <Content Include="Views\Home\IndexNotAuthenticated.cshtml" />
     <Content Include="Views\Home\_HomeNotAuthenticated.cshtml" />
-    <Content Include="Views\Survey\Results.cshtml" />
-    <Content Include="Views\Survey\_Answers.cshtml" />
+    <Content Include="Views\Answer\Results.cshtml" />
+    <Content Include="Views\Answer\_Answers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Answer\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
