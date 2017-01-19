@@ -7,12 +7,13 @@ namespace Mood
         // For more information on bundling, visit https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            var depRoot = "~/node_modules";
+            var jsDepRoot = "~/Scripts/node_modules";
+            var cssDepRoot = "~/Content/node_modules";
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                $"{depRoot}/jquery/dist/jquery.js"));
+                $"{jsDepRoot}/jquery/dist/jquery.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
-                $"{depRoot}/knockout/build/output/knockout-latest.js"));
+                $"{jsDepRoot}/knockout/build/output/knockout-latest.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/surveyApp").Include(
                 "~/Scripts/surveyApp/mood.viewmodel.js",
@@ -28,14 +29,12 @@ namespace Mood
                 "~/Scripts/util/*.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                $"{depRoot}/bootstrap/dist/js/bootstrap.js",
+                $"{jsDepRoot}/bootstrap/dist/js/bootstrap.js",
                 "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                 $"{depRoot}/bootstrap/dist/css/bootstrap.css",
+                 $"{cssDepRoot}/bootstrap/dist/css/bootstrap.css",
                  "~/Content/Site.css"));
-
-            BundleTable.EnableOptimizations = true;
         }
     }
 }

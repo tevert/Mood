@@ -423,6 +423,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="gulpfile.js" />
     <Content Include="Scripts\homeApp\homeApp.viewmodel.js" />
     <Content Include="Scripts\homeApp\survey.viewmodel.js" />
     <Content Include="Scripts\homeApp\_run.js" />
