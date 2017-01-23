@@ -8,5 +8,9 @@
     @Html.Partial("_Answers", Model)
 }
 @section Scripts{
+    @Scripts.Render("~/bundles/knockout")
     @Scripts.Render("~/bundles/util")
+    @Scripts.Render("~/bundles/chartjs")
+    @Scripts.Render("~/bundles/moment")
+    @Scripts.Render("~/bundles/resultsApp")
 }

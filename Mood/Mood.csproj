@@ -438,6 +438,9 @@
     <Content Include="Scripts\homeApp\homeApp.viewmodel.js" />
     <Content Include="Scripts\homeApp\survey.viewmodel.js" />
     <Content Include="Scripts\homeApp\_run.js" />
+    <Content Include="Scripts\resultsApp\resultsApp.viewmodel.js" />
+    <Content Include="Scripts\resultsApp\answer.viewmodel.js" />
+    <Content Include="Scripts\resultsApp\_run.js" />
     <Content Include="Scripts\surveyApp\mood.viewmodel.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
     <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />

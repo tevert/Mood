@@ -1,8 +1,8 @@
 ﻿@model Mood.ViewModels.ResultsViewModel
 
 <div class="row">
-    <h1>@Model.Survey.Description</h1>
-    <button class="btn btn-default" onclick="doCopy()">Copy Results to Clipboard</button>
+    <h1 data-bind="text: surveyDescription"></h1>
+    <button class="btn btn-default" data-bind="click: copyAnswers">Copy Results to Clipboard</button>
 </div>
 
 <div class="row">
@@ -15,28 +15,16 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (Mood.Models.Answer answer in Model.Answers)
-            {
-                <tr class="mood@(answer.MoodId)">
-                    <td>@(answer.Time.Value.ToString("f"))</td>
-                    <td>@(answer.Mood.Description)</td>
-                    <td>@(answer.Details)</td>
-                </tr>
-            }
+            <!-- ko foreach: answers -->
+            <tr data-bind="css: 'mood' + $data.moodId">
+                <td data-bind="text: $data.timeString"></td>
+                <td data-bind="text: $data.moodId"></td>
+                <td data-bind="text: $data.details"></td>
+            </tr>
+            <!-- /ko -->
         </tbody>
     </table>
 </div>
-
 <script>
-    function doCopy() {
-        @{ 
-            var dataString = "";
-            foreach(var answer in Model.Answers)
-            {
-                dataString += $"{answer.Time.Value.ToString("g")}\\t{answer.MoodId}\\t{answer.Details}\\n";
-            }
-        }
-        var dataString = "@dataString";
-        copyToClipboard(dataString);
-    }
+    window.resultsModel = @Html.Raw(Json.Encode(Model))
 </script>

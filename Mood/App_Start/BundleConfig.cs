@@ -19,6 +19,18 @@ namespace Mood
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
                 $"{jsDepRoot}/knockout/knockout-latest.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/chartjs").Include(
+                $"{jsDepRoot}/moment/moment.min.js",
+                $"{jsDepRoot}/chart.js/Chart.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/moment").Include(
+                $"{jsDepRoot}/moment/moment.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/resultsApp").Include(
+                "~/Scripts/resultsApp/answer.viewmodel.js",
+                "~/Scripts/resultsApp/resultsApp.viewmodel.js",
+                "~/Scripts/resultsApp/_run.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/surveyApp").Include(
                 "~/Scripts/surveyApp/mood.viewmodel.js",
                 "~/Scripts/surveyApp/surveyApp.viewmodel.js",
