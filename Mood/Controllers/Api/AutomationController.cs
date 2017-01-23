@@ -8,7 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
+using System.Web.Mvc;
 
 namespace Mood.Controllers.Api
 {
@@ -66,7 +68,10 @@ namespace Mood.Controllers.Api
                         dailyAnswers.Add(answer);
                     }
                 }
-                var url = UrlConfig.Url + "/Survey/Results/" + survey.Id;
+
+                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+
+                var url = urlHelper.Action("Results", "Answer", new { surveyId = survey.Id }, urlHelper.RequestContext.HttpContext.Request.Url.Scheme);
                 content += $"<h2>{survey.Description} - <a href=\"{url}\">{url}</a></h2><h3>Average Rating</h3>";
                 foreach (var answer in dailyAnswers)
                 {
