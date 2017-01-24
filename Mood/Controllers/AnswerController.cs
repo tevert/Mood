@@ -113,7 +113,9 @@ namespace Mood.Controllers
                 .OrderByDescending(a => a.Time)
                 .ToListAsync();
 
-            return View(new ResultsViewModel() { Survey = survey, Answers = answers });
+            var moods = await db.Moods.ToListAsync();
+
+            return View(new ResultsViewModel() { Survey = survey, Answers = answers, Moods = moods });
         }
     }
 }

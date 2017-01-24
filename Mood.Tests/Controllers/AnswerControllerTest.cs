@@ -326,7 +326,5 @@ namespace Mood.Tests.Controllers
         }
 
         #endregion
-
-
     }
 }
