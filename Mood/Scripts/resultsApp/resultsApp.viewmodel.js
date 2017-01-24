@@ -35,7 +35,6 @@
         type: 'line',
         data: {
             datasets: [{
-                label: 'is this used?',
                 data: dataForChart,
                 fill: false,
                 showLine: false,
@@ -79,8 +78,8 @@
                     type: 'linear',
                     position: 'left',
                     ticks: {
-                        min: 1,
-                        max: 5,
+                        min: self.moods.sort(function (mood1, mood2) { return mood1.Id - mood2.Id; })[0].Id,
+                        max: self.moods.sort(function (mood1, mood2) { return mood2.Id - mood1.Id; })[0].Id,
                         stepSize: 1,
                         callback: function (value, index, values) {
                             return self.moods.filter(function (mood) { return mood.Id == value; })[0].Description;
