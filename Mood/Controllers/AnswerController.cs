@@ -100,10 +100,18 @@ namespace Mood.Controllers
                 return HttpNotFound();
             }
 
-            if (!survey.PublicResults &&
-                (!security.IsAuthenticated || survey.Owner.UserName != security.UserName))
+            if (!survey.PublicResults)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+                if (!security.IsAuthenticated)
+                {
+                    // do auth and come back
+                    return RedirectToAction("ExternalLogin", "Account", new { returnUrl = HttpContext.Request.Url });
+                }
+
+                if (survey.Owner.UserName != security.UserName)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+                }
             }
 
             var answers = await db

@@ -10,6 +10,7 @@ using Mood.Services;
 using System.Collections.Generic;
 using Mood.ViewModels;
 using System.Linq;
+using System.Web;
 
 namespace Mood.Tests.Controllers
 {
@@ -244,6 +245,7 @@ namespace Mood.Tests.Controllers
 
             var securityMock = new Mock<ISecurity>();
             securityMock.SetupGet(s => s.UserName).Returns("Peter");
+            securityMock.SetupGet(s => s.IsAuthenticated).Returns(true);
 
             var subject = new AnswerController(dbMock.Object, surveysMock.Object, Mock.Of<IDateTimeService>(), securityMock.Object);
 
@@ -251,6 +253,36 @@ namespace Mood.Tests.Controllers
 
             Assert.IsInstanceOfType(result, typeof(HttpStatusCodeResult));
             Assert.AreEqual(403, (result as HttpStatusCodeResult).StatusCode);
+        }
+
+        [TestMethod]
+        public void Results_ResultsNotPublicUserAnonymous_ReturnsRedirectToAuthFlow()
+        {
+            var id = Guid.NewGuid();
+            var survey = new Survey() { Id = id, Owner = new ApplicationUser() { UserName = "Tyler" } };
+
+            var surveysMock = new Mock<ISurveyService>();
+            surveysMock.Setup(s => s.FindAsync(id.ToString())).ReturnsAsync(survey);
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            dbMock.SetupGet(db => db.Answers).Returns(new Mock<DbSet<Answer>>().SetupData().Object);
+
+            var securityMock = new Mock<ISecurity>();
+            securityMock.SetupGet(s => s.IsAuthenticated).Returns(false);
+
+            var subject = new AnswerController(
+                dbMock.Object,
+                surveysMock.Object,
+                Mock.Of<IDateTimeService>(),
+                securityMock.Object)
+                .MockUrl("http://localhost/Answer/Results?surveyId=1234");
+
+            var result = subject.Results(id.ToString()).Result;
+
+            Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
+            Assert.AreEqual("Account", (result as RedirectToRouteResult).RouteValues["controller"]);
+            Assert.AreEqual("ExternalLogin", (result as RedirectToRouteResult).RouteValues["action"]);
+            Assert.AreEqual("http://localhost/Answer/Results?surveyId=1234", (result as RedirectToRouteResult).RouteValues["returnUrl"].ToString());
         }
 
         [TestMethod]
