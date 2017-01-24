@@ -7,5 +7,7 @@ namespace Mood.ViewModels
     {
         public Survey Survey { get; set; }
         public IEnumerable<Answer> Answers { get; set; }
+
+        public IEnumerable<Models.Mood> Moods { get; set; }
     }
 }
