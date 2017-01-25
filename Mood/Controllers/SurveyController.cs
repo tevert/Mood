@@ -77,9 +77,15 @@ namespace Mood.Controllers
                 return HttpNotFound();
             }
 
-            if (survey.Owner.UserName != security.UserName)
+            bool isCoAdmin = survey.SharedUsers.Select(u => u.UserName).Contains(security.UserName);
+            if (survey.Owner.UserName != security.UserName && !isCoAdmin)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+
+            if (isCoAdmin) // "reset" the incoming co-admins field, only owners should be able to change that
+            {
+                editDetails.SharedUsers = survey.SharedUsers.Select(u => u.UserName);
             }
 
             try

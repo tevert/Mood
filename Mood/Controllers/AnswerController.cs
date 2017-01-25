@@ -108,7 +108,8 @@ namespace Mood.Controllers
                     return RedirectToAction("ExternalLogin", "Account", new { returnUrl = HttpContext.Request.Url });
                 }
 
-                if (survey.Owner.UserName != security.UserName)
+                if (survey.Owner.UserName != security.UserName &&
+                    !survey.SharedUsers.Select(u => u.UserName).Contains(security.UserName))
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
                 }
