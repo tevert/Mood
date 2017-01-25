@@ -3,8 +3,6 @@ using System.Web.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using Mood.Models;
-using System.Collections.Generic;
 using System;
 using Mood.Services;
 

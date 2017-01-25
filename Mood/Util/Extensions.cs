@@ -1,16 +1,26 @@
 ﻿namespace Mood.Util
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Diagnostics;
+    using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
 
     public static class Extensions
     {
+        public static string Encode(this object model)
+        {
+            var output = new StringWriter();
+            JsonSerializer.Create(new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })
+                .Serialize(output, model);
+            return output.ToString();
+        }
+
         public static void Upsert<T>(this DbContext db, Expression<Func<T, object>> identifierExpression, Expression<Func<T, object>> updatingExpression, params T[] entities)
             where T : class
         {

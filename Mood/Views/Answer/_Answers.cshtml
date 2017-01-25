@@ -1,4 +1,5 @@
 ﻿@model Mood.ViewModels.ResultsViewModel
+@using Mood.Util
 
 <div class="row">
     <h1 data-bind="text: surveyDescription"></h1>
@@ -31,5 +32,5 @@
     </table>
 </div>
 <script>
-    window.resultsModel = @Html.Raw(Json.Encode(Model))
+    window.resultsModel = @Html.Raw(Model.Encode())
 </script>

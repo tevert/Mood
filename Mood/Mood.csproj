@@ -384,6 +384,10 @@
     <Compile Include="Migrations\201701092258437_AddingPublicResultsToggle.Designer.cs">
       <DependentUpon>201701092258437_AddingPublicResultsToggle.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701251754447_AddingCoOwners.cs" />
+    <Compile Include="Migrations\201701251754447_AddingCoOwners.Designer.cs">
+      <DependentUpon>201701251754447_AddingCoOwners.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Answer.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -405,6 +409,8 @@
     <Compile Include="Services\SurveyService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Util\Extensions.cs" />
+    <Compile Include="Util\JsonHandlerAttribute.cs" />
+    <Compile Include="Util\JsonNetResult.cs" />
     <Compile Include="Util\UrlConfig.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
@@ -421,6 +427,9 @@
     <Content Include="Content\Images\Miffed.png" />
     <Content Include="Content\Images\Angry.png" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\vendor\app.css" />
+    <Content Include="Content\vendor\bootstrap-tagsinput-typeahead.css" />
+    <Content Include="Content\vendor\bootstrap-tagsinput.css" />
     <Content Include="Content\vendor\bootstrap-theme.css" />
     <Content Include="Content\vendor\bootstrap-theme.min.css" />
     <Content Include="Content\vendor\bootstrap.css" />
@@ -467,6 +476,23 @@
     <Content Include="Content\manifest.json" />
     <Content Include="package.json" />
     <Content Include="Scripts\util\copyToClipboard.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\app.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\app_bs2.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\app_bs3.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\bootstrap-tagsinput-angular.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\bootstrap-tagsinput-angular.min.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\bootstrap-tagsinput-angular.tests.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\bootstrap-tagsinput.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\bootstrap-tagsinput.min.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\events.tests.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\Gruntfile.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\helpers.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\input_with_object_items.tests.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\input_with_string_items.tests.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\karma.conf.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\reproduced_bugs.tests.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\select_with_object_items.tests.js" />
+    <Content Include="Scripts\vendor\bootstrap-tagsinput\select_with_string_items.tests.js" />
     <Content Include="Scripts\vendor\bootstrap\affix.js" />
     <Content Include="Scripts\vendor\bootstrap\alert.js" />
     <Content Include="Scripts\vendor\bootstrap\bootstrap.js" />
@@ -650,6 +676,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701092258437_AddingPublicResultsToggle.resx">
       <DependentUpon>201701092258437_AddingPublicResultsToggle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701251754447_AddingCoOwners.resx">
+      <DependentUpon>201701251754447_AddingCoOwners.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

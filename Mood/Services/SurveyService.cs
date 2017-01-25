@@ -6,6 +6,7 @@ using Mood.Migrations;
 using System.Data.Entity;
 using Mood.Services.Exceptions;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Mood.Services
 {
@@ -62,6 +63,19 @@ namespace Mood.Services
                 throw new ArgumentNullException(nameof(newValues));
             }
 
+            // Handle the co-admins
+            var unknownUsers = newValues.SharedUsers.Except(await db.Users.Select(u => u.UserName).ToListAsync());
+            if (unknownUsers.Any())
+            {
+                throw new SurveyException($"Unknown users: {unknownUsers.Aggregate((s1,s2) => s1 + ", " + s2)}. Please make sure these users have signed into Moodboard before.");
+            }
+            if (newValues.SharedUsers.Contains(survey.Owner.UserName))
+            {
+                throw new SurveyException("You cannot be a co-admin on a survey you own.");
+            }
+            survey.SharedUsers = await db.Users.Where(u => newValues.SharedUsers.Contains(u.UserName)).ToListAsync();
+
+            // Handle the name
             string newName = null;
             if (newValues.Name != null)
             {
@@ -78,6 +92,7 @@ namespace Mood.Services
                 }
             }
             survey.Name = newName;
+
             survey.PublicResults = newValues.PublicResults;
 
             await db.SaveChangesAsync();
@@ -94,11 +109,17 @@ namespace Mood.Services
             Guid guid;
             if (Guid.TryParse(identifier, out guid))
             {
-                result = await db.Surveys.Include(s => s.Owner).FirstOrDefaultAsync(s => s.Id == guid);
+                result = await db.Surveys
+                    .Include(s => s.Owner)
+                    .Include(s => s.SharedUsers)
+                    .FirstOrDefaultAsync(s => s.Id == guid);
             }
             else
             {
-                result = await db.Surveys.Include(s => s.Owner).FirstOrDefaultAsync(s => s.Name == identifier);
+                result = await db.Surveys
+                    .Include(s => s.Owner)
+                    .Include(s => s.SharedUsers)
+                    .FirstOrDefaultAsync(s => s.Name == identifier);
             }
 
             return result;

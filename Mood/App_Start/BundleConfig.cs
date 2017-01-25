@@ -46,10 +46,12 @@ namespace Mood
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                 $"{jsDepRoot}/bootstrap/bootstrap.js",
+                $"{jsDepRoot}/bootstrap-tagsinput/bootstrap-tagsinput.js",
                 "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  $"{cssDepRoot}/bootstrap.css",
+                 $"{cssDepRoot}/bootstrap-tagsinput.css",
                  "~/Content/Site.css"));
         }
     }

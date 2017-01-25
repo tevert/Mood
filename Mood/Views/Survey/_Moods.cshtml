@@ -1,4 +1,5 @@
 ﻿@model Mood.ViewModels.SurveyViewModel
+@using Mood.Util
 
 <div class="row">
     <h1>@Model.Survey.Description</h1>
@@ -27,6 +28,5 @@
     <!-- /ko -->
 </div>
 
-<script>
-    window.moods = @Html.Raw(Json.Encode(Model.Moods))
+<script>    window.moods = @Html.Raw(Model.Moods.Encode())
 </script>

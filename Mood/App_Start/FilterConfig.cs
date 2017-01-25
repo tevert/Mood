@@ -1,4 +1,4 @@
-﻿using System.Web;
+﻿using Mood.Util;
 using System.Web.Mvc;
 
 namespace Mood
@@ -8,6 +8,7 @@ namespace Mood
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new ErrorHandler.AiHandleErrorAttribute());
+            filters.Add(new JsonHandlerAttribute());
         }
     }
 }
