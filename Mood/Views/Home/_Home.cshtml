@@ -1,8 +1,31 @@
-﻿@model IEnumerable<Mood.Models.Survey>
+﻿@model Mood.ViewModels.HomeViewModel
 @using Mood.Util
-<h2>Surveys</h2>
+<h2>My Surveys</h2>
 <div class="row">
-    <!-- ko foreach: app.surveys -->
+    <div data-bind="template: { name: 'survey-template', foreach: mySurveys, templateOptions: { owner: true } }"></div>
+    @using (Html.BeginForm("Create", "Survey"))
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>New Survey</h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-3">
+                    @Html.TextBox("description", "How is your workday going?", new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" value="" class="btn btn-success glyphicon glyphicon-plus" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<h2 data-bind="visible: sharedSurveys.length">Shared Surveys</h2>
+<div class="row">
+    <div data-bind="template: { name: 'survey-template', foreach: sharedSurveys, templateOptions: { owner: false } }"></div>
+</div>
+
+<script type="text/html" id="survey-template">
     <div data-bind="css: 'panel ' + ($data.error() ? 'panel-danger' : 'panel-default')">
         <div class="panel-heading flashable" data-bind="css: flash">
             <h4><a data-bind="text: $data.description(), attr: { href: '/Survey/Get/' + $data.identifier() }"></a></h4>
@@ -21,21 +44,21 @@
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="input-group-addon">@Url.RouteUrl("SurveyRoute", null, Request.Url.Scheme)/</span>
-                            <input type="text" class="form-control" name="name" data-bind="value: $data.name, attr: { placeholder: $data.id }" />
+                            <input type="text" class="form-control" name="name" data-bind="value: name, attr: { placeholder: id }" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" data-bind="click: copyUrl.bind($data, '@Url.RouteUrl("SurveyRoute", null, Request.Url.Scheme)')"><span class="glyphicon glyphicon-copy"></span></button>
                             </span>
                         </div>
-                        <div class="input-group">
-                            <input type="text" data-role="tagsinput" placeholder="Co-admins" data-bind="value: $data.sharedUsers"/>
-                        </div>
+                        <fieldset data-bind="enable: owner" class="tagsinput">
+                            <input type="text" data-role="tagsinput" placeholder="Co-admins" data-bind="value: sharedUsers, enable: owner" />
+                        </fieldset>
                     </div>
                     <div class="col-md-4 text-right">
                         <button type="button" class="btn btn-default"
                                 data-bind="click: save.bind($data, '@Url.Action("Edit", "Survey", null, Request.Url.Scheme)')">
                             <span class="glyphicon glyphicon-floppy-save"></span> Save
                         </button>
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-bind="attr: { 'data-target': '#confimDelete' + $data.identifier() }">
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-bind="attr: { 'data-target': '#confimDelete' + $data.identifier() }, visible: owner">
                             <span class="glyphicon glyphicon-trash"></span> Delete
                         </button>
                     </div>
@@ -44,28 +67,9 @@
         </div>
         <div class="panel-footer" data-bind="visible: error, text: error"></div>
     </div>
-    <!-- /ko -->
-    @using (Html.BeginForm("Create", "Survey"))
-    {
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>New Survey</h4>
-            </div>
-            <div class="panel-body">
-                <div class="col-md-3">
-                    @Html.TextBox("description", "How is your workday going?", new { @class = "form-control" })
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" value="" class="btn btn-success glyphicon glyphicon-plus" />
-                </div>
-            </div>
-        </div>
-    }
-</div>
+</script>
 
-
-
-<!-- ko foreach: app.surveys -->
+<!-- ko foreach: app.mySurveys -->
 <div class="modal fade" role="dialog" data-bind="attr: {'id': 'confimDelete' + $data.identifier()}">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -83,6 +87,6 @@
 <!-- /ko -->
 
 <script>
-    window.surveys = @Html.Raw(Model.Encode())
+window.model = @Html.Raw(Model.Encode())
 </script>
 

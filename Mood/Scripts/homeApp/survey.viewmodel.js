@@ -1,6 +1,7 @@
-﻿function SurveyViewModel(data) {
+﻿function SurveyViewModel(data, isOwner) {
     var self = this;
 
+    self.owner = isOwner;
     self.id = ko.observable(data.Id);
     self.description = ko.observable(data.Description);
     self.name = ko.observable(data.Name);

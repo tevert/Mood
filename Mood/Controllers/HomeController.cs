@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using System;
 using Mood.Services;
+using Mood.ViewModels;
 
 namespace Mood.Controllers
 {
@@ -36,9 +37,13 @@ namespace Mood.Controllers
             {
                 return View("IndexNotAuthenticated");
             }
-            
-            var surveys = await db.Surveys.Where(s => s.Owner.UserName == security.UserName).ToListAsync();
-            return View(surveys);
+
+            var me = db.Users
+                .Include(u => u.SharedSurveys)
+                .Include(u => u.OwnedSurveys)
+                .First(u => u.UserName == security.UserName);
+
+            return View(new HomeViewModel() { MySurveys = me.OwnedSurveys, SharedSurveys = me.SharedSurveys });
         }
     }
 }

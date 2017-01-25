@@ -413,6 +413,7 @@
     <Compile Include="Util\JsonNetResult.cs" />
     <Compile Include="Util\UrlConfig.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
+    <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="ViewModels\ResultsViewModel.cs" />
     <Compile Include="ViewModels\SurveyEditViewModel.cs" />

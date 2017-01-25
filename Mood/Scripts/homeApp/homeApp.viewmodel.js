@@ -2,8 +2,12 @@
     // Private state
     var self = this;
     
-    self.surveys = window.surveys.map(function (surveyModel) {
-        return new SurveyViewModel(surveyModel);
+    self.mySurveys = window.model.MySurveys.map(function (surveyModel) {
+        return new SurveyViewModel(surveyModel, true);
+    });
+
+    self.sharedSurveys = window.model.SharedSurveys.map(function (surveyModel) {
+        return new SurveyViewModel(surveyModel, false);
     });
 
     return self;
