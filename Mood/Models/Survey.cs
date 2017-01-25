@@ -7,6 +7,11 @@ namespace Mood.Models
 {
     public class Survey
     {
+        public Survey()
+        {
+            SharedUsers = new List<ApplicationUser>();
+        }
+
         [Key]
         public Guid Id { get; set; }
         

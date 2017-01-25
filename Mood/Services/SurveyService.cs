@@ -64,16 +64,23 @@ namespace Mood.Services
             }
 
             // Handle the co-admins
-            var unknownUsers = newValues.SharedUsers.Except(await db.Users.Select(u => u.UserName).ToListAsync());
-            if (unknownUsers.Any())
+            if (newValues.SharedUsers.Any())
             {
-                throw new SurveyException($"Unknown users: {unknownUsers.Aggregate((s1,s2) => s1 + ", " + s2)}. Please make sure these users have signed into Moodboard before.");
+                var unknownUsers = newValues.SharedUsers.Except(await db.Users.Select(u => u.UserName).ToListAsync());
+                if (unknownUsers.Any())
+                {
+                    throw new SurveyException($"Unknown users: {unknownUsers.Aggregate((s1, s2) => s1 + ", " + s2)}. Please make sure these users have signed into Mood before.");
+                }
+                if (newValues.SharedUsers.Contains(survey.Owner.UserName))
+                {
+                    throw new SurveyException("You cannot be a co-admin on a survey you own.");
+                }
+                survey.SharedUsers = await db.Users.Where(u => newValues.SharedUsers.Contains(u.UserName)).ToListAsync();
             }
-            if (newValues.SharedUsers.Contains(survey.Owner.UserName))
+            else
             {
-                throw new SurveyException("You cannot be a co-admin on a survey you own.");
+                survey.SharedUsers.Clear();
             }
-            survey.SharedUsers = await db.Users.Where(u => newValues.SharedUsers.Contains(u.UserName)).ToListAsync();
 
             // Handle the name
             string newName = null;
