@@ -38,22 +38,27 @@ namespace Mood.Controllers.Api
         }
 
         // POST api/<controller>
-        public async Task<dynamic> Post()
+        public async Task Post()
         {
             var owners = db.Users.ToList();
             foreach (var owner in owners)
             {
                 await SendEmail(owner);
             }
-            return null;
         }
 
-        private async Task<dynamic> SendEmail(ApplicationUser owner)
+        private async Task SendEmail(ApplicationUser owner)
         {
+            var surveys = db.Surveys.Where(s => s.Owner.Id == owner.Id).ToList();
+            if (!surveys.Any())
+            {
+                return;
+            }
+
             var previousDate = time.Now().AddDays(-1);
             var subject = $"Mood Daily Summary for {previousDate.ToShortDateString()}";
             var content = $"<html><head></head><body><h1>Mood summary for {previousDate.ToShortDateString()}</h1>";
-            var surveys = db.Surveys.Where(s => s.Owner.Id == owner.Id).ToList();
+            
             foreach (var survey in surveys)
             {
                 var comments = new List<string>();
@@ -97,7 +102,7 @@ namespace Mood.Controllers.Api
                 }
             }
             content += "</body></html>";
-            return await emailService.SendEmailAsync(owner.Email, subject, content);
+            await emailService.SendEmailAsync(owner.Email, subject, content);
         }
     }
 }
