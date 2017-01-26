@@ -252,6 +252,40 @@ namespace Mood.Tests.Controllers
         }
 
         [TestMethod]
+        public void Edit_UserIsCoOwner_ResetsCoOwnersArgAndReturnsSuccessJson()
+        {
+            var id = Guid.NewGuid();
+            var survey = new Survey()
+            {
+                Id = id,
+                Owner = new ApplicationUser() { UserName = "Tyler" },
+                SharedUsers = new[] { new ApplicationUser() { UserName = "Shannon" } }
+            };
+            var newData = new SurveyEditViewModel() { SharedUsers = new[] { "Shannon", "Bill" } };
+
+            var dbMock = new Mock<IApplicationDBContext>();
+
+            var surveysMock = new Mock<ISurveyService>();
+            surveysMock.Setup(s => s.FindAsync(id.ToString())).ReturnsAsync(survey);
+
+            var securityMock = new Mock<ISecurity>();
+            securityMock.SetupGet(s => s.UserName).Returns("Shannon");
+
+            var subject = new SurveyController(dbMock.Object, surveysMock.Object, securityMock.Object);
+
+            var result = subject.Edit(id.ToString(), newData).Result;
+
+            surveysMock.Verify(s => s.EditAsync(survey,
+                It.Is<SurveyEditViewModel>(vm =>
+                    vm == newData &&
+                    vm.SharedUsers.Count() == 1 &&
+                    vm.SharedUsers.First() == "Shannon")));
+            Assert.IsInstanceOfType(result, typeof(JsonResult));
+            dynamic jsonData = (result as JsonResult).Data;
+            Assert.IsNotNull(jsonData.success);
+        }
+
+        [TestMethod]
         public void Edit_ServiceOK_ReturnsSuccessJson()
         {
             var id = Guid.NewGuid();
@@ -270,6 +304,7 @@ namespace Mood.Tests.Controllers
 
             var result = subject.Edit(id.ToString(), newData).Result;
 
+            surveysMock.Verify(s => s.EditAsync(survey, newData));
             Assert.IsInstanceOfType(result, typeof(JsonResult));
             dynamic jsonData = (result as JsonResult).Data;
             Assert.IsNotNull(jsonData.success);

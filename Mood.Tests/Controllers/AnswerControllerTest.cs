@@ -286,6 +286,51 @@ namespace Mood.Tests.Controllers
         }
 
         [TestMethod]
+        public void Results_ResultsNotPublicUserCoOwner_ReturnView()
+        {
+            var id = Guid.NewGuid();
+            var survey = new Survey()
+            {
+                Id = id,
+                Owner = new ApplicationUser() { UserName = "Tyler" },
+                SharedUsers = new[] { new ApplicationUser() { UserName = "Shannon" } }
+            };
+            var moods = new[] { new Models.Mood() { Id = 1 }, new Models.Mood() { Id = 2 } };
+            var answer1 = new Answer() { MoodId = 1, SurveyId = id };
+            var answer2 = new Answer() { MoodId = 2, SurveyId = id };
+            var answers = new List<Answer>() { answer1, answer2 };
+
+            var surveysMock = new Mock<ISurveyService>();
+            surveysMock.Setup(s => s.FindAsync(id.ToString())).ReturnsAsync(survey);
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            var moodDataMock = new Mock<DbSet<Models.Mood>>().SetupData(moods);
+            var answerDataMock = new Mock<DbSet<Answer>>().SetupData(answers);
+            dbMock.Setup(db => db.Moods).Returns(moodDataMock.Object);
+            dbMock.Setup(db => db.Answers).Returns(answerDataMock.Object);
+
+            var securityMock = new Mock<ISecurity>();
+            securityMock.SetupGet(s => s.IsAuthenticated).Returns(true);
+            securityMock.SetupGet(s => s.UserName).Returns("Shannon");
+
+            var subject = new AnswerController(
+                dbMock.Object,
+                surveysMock.Object,
+                Mock.Of<IDateTimeService>(),
+                securityMock.Object);
+
+            var result = subject.Results(id.ToString()).Result;
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            var model = (result as ViewResult).Model as ResultsViewModel;
+            Assert.IsNotNull(model);
+            Assert.AreSame(survey, model.Survey);
+            Assert.AreEqual(2, model.Answers.Count());
+            Assert.AreSame(answer1, model.Answers.ToList()[0]);
+            Assert.AreSame(answer2, model.Answers.ToList()[1]);
+        }
+
+        [TestMethod]
         public void Results_PublicResultsAnonymousUser_ReturnsViewWithViewModel()
         {
             var id = Guid.NewGuid();

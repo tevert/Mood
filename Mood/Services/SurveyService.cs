@@ -6,7 +6,6 @@ using Mood.Migrations;
 using System.Data.Entity;
 using Mood.Services.Exceptions;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace Mood.Services
 {

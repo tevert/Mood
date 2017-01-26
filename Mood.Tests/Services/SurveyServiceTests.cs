@@ -325,6 +325,98 @@ namespace Mood.Tests.Services
             dbMock.Verify(d => d.SaveChangesAsync());
         }
 
+        [TestMethod]
+        public void EditAsync_CoOwnerIncludesOwner_ThrowsException()
+        {
+            var tyler = new ApplicationUser() { UserName = "Tyler" };
+            var survey = new Survey() { Owner = tyler };
+            var newValues = new SurveyEditViewModel() { SharedUsers = new[] { "Tyler" } };
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            var surveyDataMock = new Mock<DbSet<Survey>>().SetupData(new[] { survey });
+            dbMock.SetupGet(d => d.Surveys).Returns(surveyDataMock.Object);
+            var usersMock = new Mock<DbSet<ApplicationUser>>().SetupData(new[] { tyler });
+            dbMock.SetupGet(d => d.Users).Returns(usersMock.Object);
+
+            var subject = new SurveyService(dbMock.Object);
+
+            var ex = Helpers.Catch<SurveyException>(() => {
+                subject.EditAsync(survey, newValues).Wait();
+            });
+
+            Assert.AreEqual("You cannot be a co-admin on a survey you own.", ex.Message);
+            Assert.AreEqual(0, survey.SharedUsers.Count);
+            dbMock.Verify(d => d.SaveChangesAsync(), Times.Never);
+        }
+
+        [TestMethod]
+        public void EditAsync_CoOwnerIncludesMysteryPerson_ThrowsException()
+        {
+            var tyler = new ApplicationUser() { UserName = "Tyler" };
+            var survey = new Survey() { Owner = tyler };
+            var newValues = new SurveyEditViewModel() { SharedUsers = new[] { "Shannon", "Bill" } };
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            var surveyDataMock = new Mock<DbSet<Survey>>().SetupData(new[] { survey });
+            dbMock.SetupGet(d => d.Surveys).Returns(surveyDataMock.Object);
+            var usersMock = new Mock<DbSet<ApplicationUser>>().SetupData(new[] { tyler });
+            dbMock.SetupGet(d => d.Users).Returns(usersMock.Object);
+
+            var subject = new SurveyService(dbMock.Object);
+
+            var ex = Helpers.Catch<SurveyException>(() => {
+                subject.EditAsync(survey, newValues).Wait();
+            });
+
+            Assert.AreEqual("Unknown users: Shannon, Bill. Please make sure these users have signed into Mood before.", ex.Message);
+            Assert.AreEqual(0, survey.SharedUsers.Count);
+            dbMock.Verify(d => d.SaveChangesAsync(), Times.Never);
+        }
+
+        [TestMethod]
+        public void EditAsync_CoOwnerIncludesPerson_AddsPerson()
+        {
+            var tyler = new ApplicationUser() { UserName = "Tyler" };
+            var shannon = new ApplicationUser() { UserName = "Shannon" };
+            var survey = new Survey() { Owner = tyler };
+            var newValues = new SurveyEditViewModel() { SharedUsers = new[] { "Shannon" } };
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            var surveyDataMock = new Mock<DbSet<Survey>>().SetupData(new[] { survey });
+            dbMock.SetupGet(d => d.Surveys).Returns(surveyDataMock.Object);
+            var usersMock = new Mock<DbSet<ApplicationUser>>().SetupData(new[] { tyler, shannon });
+            dbMock.SetupGet(d => d.Users).Returns(usersMock.Object);
+
+            var subject = new SurveyService(dbMock.Object);
+            
+            subject.EditAsync(survey, newValues).Wait();
+            
+            Assert.AreEqual(1, survey.SharedUsers.Count);
+            dbMock.Verify(d => d.SaveChangesAsync());
+        }
+
+        [TestMethod]
+        public void EditAsync_CoOwnersEmpty_RemovesCoOwners()
+        {
+            var tyler = new ApplicationUser() { UserName = "Tyler" };
+            var shannon = new ApplicationUser() { UserName = "Shannon" };
+            var survey = new Survey() { Owner = tyler, SharedUsers = new List<ApplicationUser>() { shannon } };
+            var newValues = new SurveyEditViewModel() { SharedUsers = new string[] { } };
+
+            var dbMock = new Mock<IApplicationDBContext>();
+            var surveyDataMock = new Mock<DbSet<Survey>>().SetupData(new[] { survey });
+            dbMock.SetupGet(d => d.Surveys).Returns(surveyDataMock.Object);
+            var usersMock = new Mock<DbSet<ApplicationUser>>().SetupData(new[] { tyler, shannon });
+            dbMock.SetupGet(d => d.Users).Returns(usersMock.Object);
+
+            var subject = new SurveyService(dbMock.Object);
+
+            subject.EditAsync(survey, newValues).Wait();
+
+            Assert.AreEqual(0, survey.SharedUsers.Count);
+            dbMock.Verify(d => d.SaveChangesAsync());
+        }
+
         #endregion
     }
 }
