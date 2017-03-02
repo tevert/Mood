@@ -21,10 +21,12 @@
         var url = baseUrl + '/' + self.id();
 
         // need to do a bit of extra cleaning on the sharedUsers field
-        var sharedUsers = self.sharedUsers()
+        var sharedUsers = self.sharedUsers().length ?
+            self.sharedUsers()
             .split(',')
             .map(function (username) { return username.trim(); })
-            .filter(function (username) { return username.length > 0 });
+            .filter(function (username) { return username.length > 0 })
+            : null;
 
         $.ajax({
             method: 'post',

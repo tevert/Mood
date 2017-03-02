@@ -121,6 +121,14 @@ namespace Mood.Controllers
                 .Where(a => a.SurveyId == survey.Id)
                 .OrderByDescending(a => a.Time)
                 .ToListAsync();
+            
+            // Strip comments if we're not an owner or co-owner
+            if (!security.IsAuthenticated || 
+                (security.UserName != survey.Owner.UserName &&
+                !survey.SharedUsers.Select(u => u.UserName).Contains(security.UserName)))
+            {
+                answers.ForEach(a => a.Details = null);
+            }
 
             var moods = await db.Moods.ToListAsync();
 

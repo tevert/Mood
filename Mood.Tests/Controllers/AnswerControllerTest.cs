@@ -331,13 +331,13 @@ namespace Mood.Tests.Controllers
         }
 
         [TestMethod]
-        public void Results_PublicResultsAnonymousUser_ReturnsViewWithViewModel()
+        public void Results_PublicResultsAnonymousUser_ReturnsViewWithViewModelWithNoComments()
         {
             var id = Guid.NewGuid();
             var survey = new Survey() { Id = id, PublicResults = true, Owner = new ApplicationUser() { UserName = "Tyler" } };
             var moods = new[] { new Models.Mood() { Id = 1 }, new Models.Mood() { Id = 2 } };
-            var answer1 = new Answer() { MoodId = 1, SurveyId = id };
-            var answer2 = new Answer() { MoodId = 2, SurveyId = id };
+            var answer1 = new Answer() { MoodId = 1, SurveyId = id, Details = "I am very angry" };
+            var answer2 = new Answer() { MoodId = 2, SurveyId = id, Details = "I am very happy" };
             var answers = new List<Answer>() { answer1, answer2 };
 
             var surveysMock = new Mock<ISurveyService>();
@@ -364,6 +364,8 @@ namespace Mood.Tests.Controllers
             Assert.AreEqual(2, model.Answers.Count());
             Assert.AreSame(answer1, model.Answers.ToList()[0]);
             Assert.AreSame(answer2, model.Answers.ToList()[1]);
+            Assert.IsNull(model.Answers.ToList()[0].Details);
+            Assert.IsNull(model.Answers.ToList()[1].Details);
         }
 
         [TestMethod]
