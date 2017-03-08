@@ -16,6 +16,12 @@ namespace Mood
             );
 
             routes.MapRoute(
+                name: "ResultsRoute",
+                url: "r/{id}",
+                defaults: new { controller = "Answer", action = "Results" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

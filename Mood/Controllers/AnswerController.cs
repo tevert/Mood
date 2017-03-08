@@ -92,9 +92,9 @@ namespace Mood.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Results(string surveyId)
+        public async Task<ActionResult> Results(string id)
         {
-            var survey = await surveys.FindAsync(surveyId);
+            var survey = await surveys.FindAsync(id);
             if (survey == null)
             {
                 return HttpNotFound();
