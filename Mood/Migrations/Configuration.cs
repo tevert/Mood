@@ -15,11 +15,11 @@ namespace Mood.Migrations
 
         protected override void Seed(ApplicationDBContext context)
         {
-            context.Moods.AddOrUpdate(m => m.Description,
+            context.Moods.AddOrUpdate(m => m.IconName,
                 new Models.Mood() { Description = "Angry", IconName = "Angry" },
-                new Models.Mood() { Description = "Miffed", IconName = "Miffed" },
-                new Models.Mood() { Description = "Neutral", IconName = "Neutral" },
-                new Models.Mood() { Description = "Ok", IconName = "Ok" },
+                new Models.Mood() { Description = "Unhappy", IconName = "Miffed" },
+                new Models.Mood() { Description = "OK", IconName = "Neutral" },
+                new Models.Mood() { Description = "Good", IconName = "Ok" },
                 new Models.Mood() { Description = "Fantastic", IconName = "Fantastic" });
 
             try
