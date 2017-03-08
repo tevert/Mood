@@ -360,6 +360,10 @@
     <Compile Include="Migrations\201701251754447_AddingCoOwners.Designer.cs">
       <DependentUpon>201701251754447_AddingCoOwners.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703082205201_SeparateFieldForMoodIcons.cs" />
+    <Compile Include="Migrations\201703082205201_SeparateFieldForMoodIcons.Designer.cs">
+      <DependentUpon>201703082205201_SeparateFieldForMoodIcons.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Answer.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -912,6 +916,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701251754447_AddingCoOwners.resx">
       <DependentUpon>201701251754447_AddingCoOwners.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703082205201_SeparateFieldForMoodIcons.resx">
+      <DependentUpon>201703082205201_SeparateFieldForMoodIcons.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

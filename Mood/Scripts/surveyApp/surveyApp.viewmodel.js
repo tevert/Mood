@@ -8,7 +8,7 @@
     self.pendingRequest = ko.observable(false);
     
     self.moods = window.moods.map(function (moodModel) {
-        return new MoodViewModel(moodModel.Id, window.location.origin + '/Content/Images/' + moodModel.Description + '.png');
+        return new MoodViewModel(moodModel.Id, window.location.origin + '/Content/Images/' + moodModel.IconName + '.png');
 	});
 
 	self.showDetails = function () {
