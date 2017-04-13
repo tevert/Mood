@@ -76,7 +76,7 @@ namespace Mood.Controllers.Api
 
                 var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
 
-                var url = urlHelper.Action("Results", "Answer", new { surveyId = survey.Id }, urlHelper.RequestContext.HttpContext.Request.Url.Scheme);
+                var url = urlHelper.Action("Results", "Answer", new { id = survey.Id }, urlHelper.RequestContext.HttpContext.Request.Url.Scheme);
                 content += $"<h2>{survey.Description} - <a href=\"{url}\">{url}</a></h2><h3>Average Rating</h3>";
                 foreach (var answer in dailyAnswers)
                 {
