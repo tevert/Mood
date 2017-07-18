@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Mood.ViewModels
 {
+// Comment 123
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
