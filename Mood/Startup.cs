@@ -20,6 +20,7 @@ namespace Mood
     {
         public void Configuration(IAppBuilder app)
         {
+		// Comment 123
             app.UseApplicationInsights();
 
             // Configure the db context, user manager and signin manager to use a single instance per request
